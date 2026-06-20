@@ -52,4 +52,4 @@ For now I see those entities :
 ]```
 
 ## Tasks now (last update 17/06/26)
-[ ] Create files and eventually a folder at a good place in the repo that define entities (not models for now)
+[X] Create files and eventually a folder at a good place in the repo that define entities (not models for now)
