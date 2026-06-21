@@ -10,13 +10,12 @@ export interface Owner {
 
 export interface Customer extends Owner {
   email?: string;
-  ongoingForfaits: Forfait[];
+  ongoingForfaits: CustomerForfait[];
 }
 
 export interface Dog {
   id: number;
   name: string;
-  owner: Owner;
   age?: number;
   breed?: string;
   sex?: string;
@@ -37,8 +36,7 @@ export interface CustomerForfait {
 
 export interface Session {
   id: number;
-  date: Date;
+  date: string;
   theme: string;
   content: string;
 }
-

@@ -53,3 +53,5 @@ For now I see those entities :
 
 ## Tasks now (last update 17/06/26)
 [X] Create files and eventually a folder at a good place in the repo that define entities (not models for now)
+[X] Create mock data in the app code and display it with views (does not have to be pretty at first)
+[ ] Put the mock data in a file (json-server?)
