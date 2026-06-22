@@ -1,0 +1,111 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "surname": "Doe",
+      "email": "6yE9o@example.com",
+      "dog": {
+        "id": 1,
+        "name": "Rex",
+        "breed": "German shepherd"
+      },
+      "ongoingForfaits": [
+        {
+          "id": 1,
+          "type": "F15",
+          "numberOfSessions": 15,
+          "passedSessions": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "firstname": "Damien",
+      "dog": {
+        "id": 2,
+        "name": "Vaya",
+        "age": 1,
+        "breed": "English cocker spaniel",
+        "sex": "F"
+      },
+      "ongoingForfaits": [
+        {
+          "id": 2,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": []
+        },
+        {
+          "id": 3,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": []
+        },
+        {
+          "id": 4,
+          "type": "F15",
+          "numberOfSessions": 15,
+          "passedSessions": [
+            {
+              "id": 1,
+              "date": "2026-02-06",
+              "theme": "Règles de vie concernant la nourriture et les contacts jeux et caresses.",
+              "content": "Séance règles de vie concernant la nourriture et les contacts jeux et caresses.\n\nNous avons également fait le conditionnement canette, Vaya n'étant pas sensible à autre chose que la canette qui fonctionne sur elle."
+            },
+            {
+              "id": 2,
+              "date": "2026-02-11",
+              "theme": "Séance règle de vie partie territoire + solutions contre le vol d'objet.",
+              "content": "Territoire : \n- interdit de se cacher sous les meubles qui est un point stratégique pour elle.\n- interdit de suivre les humains partout\n- passer la porte en second, attendre avant d'aller voir les invités\n\nSolutions contre le vol : \n- on fait exprès de mettre les objets partout, dès qu'elle y va canette sinon récompense\n- solution de la pierre d'alun dans les mouchoirs\n\nJe joins la fiche générale des règles de vie"
+            },
+            {
+              "id": 3,
+              "date": "2026-02-17",
+              "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
+              "content": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "firstname": "Eric",
+      "surname": "Doe",
+      "email": "yE9o@example.com",
+      "dog": {
+        "id": 3,
+        "name": "Maya",
+        "age": 2
+      },
+      "ongoingForfaits": [
+        {
+          "id": 5,
+          "type": "F10",
+          "numberOfSessions": 10,
+          "passedSessions": [
+            {
+              "id": 4,
+              "date": "2025-01-20",
+              "theme": "Thème : déconditionnement à l'approche d'Eric.",
+              "content": "On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte."
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": []
+        },
+        {
+          "id": 7,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": []
+        }
+      ]
+    }
+  ]
+}
