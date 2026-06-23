@@ -55,5 +55,12 @@ For now I see those entities :
 [X] Create files and eventually a folder at a good place in the repo that define entities (not models for now)
 [X] Create mock data in the app code and display it with views (does not have to be pretty at first)
 [X] Put the mock data in a file (json-db like?) instead of the code
-[ ] Create a script to perform an add operation within the file : add a customer with their dog and ongoing forfaits info given a standardized file to define. Cautious of the ids!
-[ ] Create a script to perform a remove customer operation 
+[X] Create a script to perform an add operation within the file : add a customer with their dog and ongoing forfaits info given a standardized file to define. Cautious of the ids!
+[ ] Add Customers's field passedForfaits
+[ ] Migrate all customer Daska infos on forfaits and passed sessions
+[ ] If time, figure out how to link pdfs to entities!! Otherwise I will have to migrate all to computer's folder for now.
+([ ] Create a script to perform a remove customer operation)
+### Prettify the customer view
+[ ] Justify text and present each view as a block/card
+[ ] Customer and dog's names on big title (h2)
+[ ] Blockify other components: Forfaits en cours as a block, each forfait also, and each passed session
