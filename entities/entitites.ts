@@ -10,7 +10,8 @@ export interface Owner {
 
 export interface Customer extends Owner {
   email?: string;
-  ongoingForfaits: CustomerForfait[];
+  passedForfaits?: CustomerForfait[];
+  ongoingForfaits?: CustomerForfait[];
 }
 
 export interface Dog {

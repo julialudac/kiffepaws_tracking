@@ -39,7 +39,13 @@ function CustomerView({ customer }: { customer: Customer }) {
       <CustomerHeader customer={customer} />
       Forfaits en cours :
       <div>
-        {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+        {customer.ongoingForfaits && customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+          <ForfaitView key={forfait.id} forfait={forfait} />
+        ))}
+      </div>
+      Forfaits terminés :
+      <div>
+        {customer.passedForfaits && customer.passedForfaits.map((forfait: CustomerForfait) => (
           <ForfaitView key={forfait.id} forfait={forfait} />
         ))}
       </div>

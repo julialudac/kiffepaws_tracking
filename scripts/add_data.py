@@ -89,7 +89,7 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   print("object after append id:", new_customer)
 
 
-yaml_dum = '''
+yaml_dum_damien = '''
 firstname: Damien
 email: 6yE9o@example.com
 dog:
@@ -128,4 +128,33 @@ ongoingForfaits:
     passedSessions: []
 '''
 
-add_customer(yaml_dum)
+yaml_dum_eric = '''
+firstname: Eric
+email: eric@example.com
+dog:
+  name: Maya
+  age: 2
+  sex: F
+ongoingForfaits:
+  - type: F10
+    numberOfSessions: 10
+    passedSessions:
+      - date: 20/01/2025
+        theme: Déconditionnement à l'approche d'Eric.
+        content: |
+          On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte.
+  - type: 1 balade éducative offerte
+    numberOfSessions: 1
+    passedSessions: []
+passedForfaits:
+  - type: 1 balade éducative offerte
+    numberOfSessions: 1
+    passedSessions:
+      - date: 17/02/2026
+        theme: 'Thème : Travail du rappel et du début de patience avec le "assis".'
+        content: |
+          Difficile de travailler le rappel, car Maya ne va pas loin.
+          Un trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise.
+'''
+
+add_customer(yaml_dum_eric)

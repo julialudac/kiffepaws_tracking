@@ -79,6 +79,21 @@
         "name": "Maya",
         "age": 2
       },
+      "passedForfaits": [
+        {
+          "id": 6,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": [
+            {
+              "id": 8,
+              "date": "17/02/2026",
+              "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
+              "content": "Difficile de travailler le rappel, car Maya ne va pas loin.\nUn trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise."
+            }
+          ]
+        }
+      ],
       "ongoingForfaits": [
         {
           "id": 5,
@@ -92,12 +107,6 @@
               "content": "On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte."
             }
           ]
-        },
-        {
-          "id": 6,
-          "type": "1 balade éducative offerte",
-          "numberOfSessions": 1,
-          "passedSessions": []
         },
         {
           "id": 7,

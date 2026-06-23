@@ -56,7 +56,7 @@ For now I see those entities :
 [X] Create mock data in the app code and display it with views (does not have to be pretty at first)
 [X] Put the mock data in a file (json-db like?) instead of the code
 [X] Create a script to perform an add operation within the file : add a customer with their dog and ongoing forfaits info given a standardized file to define. Cautious of the ids!
-[ ] Add Customers's field passedForfaits
+[X] Add Customers's field passedForfaits
 [ ] Migrate all customer Daska infos on forfaits and passed sessions
 [ ] If time, figure out how to link pdfs to entities!! Otherwise I will have to migrate all to computer's folder for now.
 ([ ] Create a script to perform a remove customer operation)
