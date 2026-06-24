@@ -41,7 +41,7 @@ function CustomerView({ customer }: { customer: Customer }) {
       Documents :
       <div>
         {customer.documents && customer.documents.map((document: Upload) => (
-          <DocumentIcon key={document.id} document={document} />
+          <div key={document.id}> <DocumentIcon document={document} /> </div>
         ))}
       </div>
       Forfaits en cours :

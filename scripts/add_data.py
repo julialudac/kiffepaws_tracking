@@ -5,7 +5,7 @@
 import yaml
 import requests
 
-""" This script will add a new customer to the database
+""" This script will add a new customer to the database.
 The information should be in the yaml format like the example below:
 firstname: Damien
 email: 6yE9o@example.com
@@ -43,7 +43,13 @@ ongoingForfaits:
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions: []
+documents:
+  - title: Bilan comportemental
+    filename: doc1-bilan-comportemental.pdf
+  - title: Règles de vie
+    filename: doc2-regles-de-vie.pdf
 '''
+Note: The documents must be stored in the public/uploads directory to be accessible
 """
 def add_customer(customer_yaml : str) -> None:
   # 1. Parse the input string into a dictionary
@@ -88,6 +94,10 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   print("new_first_passed_session_id", new_first_passed_session_id)
   print("object after append id:", new_customer)
 
+  for d in new_customer['documents']:
+    document_id = d['filename'].split('-')[len("doc"):]
+    d['id'] = document_id
+
 
 yaml_dum_damien = '''
 firstname: Damien
@@ -126,6 +136,11 @@ ongoingForfaits:
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions: []
+documents:
+  - title: Bilan comportemental
+    filename: doc1-bilan-comportemental.pdf
+  - title: Règles de vie
+    filename: doc2-regles-de-vie.pdf
 '''
 
 yaml_dum_eric = '''
@@ -155,6 +170,9 @@ passedForfaits:
         content: |
           Difficile de travailler le rappel, car Maya ne va pas loin.
           Un trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise.
+documents:
+  - title: Règles de vie
+    filename: doc2-regles-de-vie.pdf
 '''
 
 add_customer(yaml_dum_eric)
