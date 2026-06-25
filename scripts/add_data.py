@@ -66,37 +66,74 @@ def add_customer(customer_yaml : str) -> None:
   print("succes")
 
 
+# Code dégueulasse mais au moins chaque action est séparée, et cela ne vaut pas le coup de refacto 
+# pour le moment
 def __append_ids__(existing_customers : list, new_customer : dict) -> None:
-  new_customer_id = len(existing_customers) + 1
+  new_customer_id = int(existing_customers[-1]['id']) + 1
   new_customer['id'] = new_customer_id
   print("new_customer_id", new_customer_id)
 
-  new_dog_id = len(existing_customers) + 1
+  new_dog_id = int(existing_customers[-1]['dog']['id']) + 1
   new_customer['dog']['id'] = new_dog_id
   print("new_dog_id", new_dog_id)
 
   new_first_ongoing_forfait_id = 1
-  for c in existing_customers:
-    new_first_ongoing_forfait_id += len(c['ongoingForfaits'])
+  for c in reversed(existing_customers):
+    if len(c['ongoingForfaits']) > 0:
+      new_first_ongoing_forfait_id = c['ongoingForfaits'][-1]['id'] + 1
+      break
   for forfait in new_customer['ongoingForfaits']:
     forfait['id'] = new_first_ongoing_forfait_id
     new_first_ongoing_forfait_id += 1
   print("new_first_ongoing_forfait_id", new_first_ongoing_forfait_id)
 
-  new_first_passed_session_id = 1
-  for c in existing_customers:
-    for forfait in c['ongoingForfaits']:
-      new_first_passed_session_id += len(forfait['passedSessions'])
+  new_first_ongoing_forfait_passed_session_id = 1
+  for c in reversed(existing_customers):
+    if len(c['ongoingForfaits']) > 0:
+      for forfait in reversed(c['ongoingForfaits']):
+        if len(forfait['passedSessions']) > 0:
+          new_first_ongoing_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
+          break
+      if new_first_ongoing_forfait_passed_session_id != 1:
+        break
   for forfait in new_customer['ongoingForfaits']:
     for session in forfait['passedSessions']:
-      session['id'] = new_first_passed_session_id
-      new_first_passed_session_id += 1
-  print("new_first_passed_session_id", new_first_passed_session_id)
-  print("object after append id:", new_customer)
+      session['id'] = new_first_ongoing_forfait_passed_session_id
+      new_first_ongoing_forfait_passed_session_id += 1
+  print("new_first_ongoing_forfait_passed_session_id", new_first_ongoing_forfait_passed_session_id)
 
+  # For now we consider ongoing forfait and passed forfait 2 different tables
+  # while in the future in the database they will be stored in the same table, and an ongoing 
+  # forfait won't have the same id as a passed forfait
+  new_first_passed_forfait_id = 1
+  for c in reversed(existing_customers):
+    if len(c['passedForfaits']) > 0:
+      new_first_passed_forfait_id = c['passedForfaits'][-1]['id'] + 1
+      break
+  for forfait in new_customer['passedForfaits']:
+    forfait['id'] = new_first_passed_forfait_id
+    new_first_passed_forfait_id += 1
+  print("new_first_passed_forfait_id", new_first_passed_forfait_id)
+
+  new_first_passed_forfait_passed_session_id = 1
+  for c in reversed(existing_customers):
+    for forfait in reversed(c.get('passedForfaits', [])):
+      if len(forfait['passedSessions']) > 0:
+        new_first_passed_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
+        break
+    if new_first_passed_forfait_passed_session_id != 1:
+      break
+  for forfait in new_customer.get('passedForfaits', []):
+    for session in forfait['passedSessions']:
+      session['id'] = new_first_passed_forfait_passed_session_id
+      new_first_passed_forfait_passed_session_id += 1
+  print("new_first_passed_forfait_passed_session_id", new_first_passed_forfait_passed_session_id)
+  
   for d in new_customer['documents']:
     document_id = d['filename'].split('-')[len("doc"):]
     d['id'] = document_id
+
+  # print("object after append id:", new_customer)
 
 
 yaml_dum_damien = '''
