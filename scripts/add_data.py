@@ -2,6 +2,9 @@
 # using Yaml format, because more human readable
 # I put the argument in the file itself and call the function!
 
+import sys
+from pathlib import Path
+
 import yaml
 import requests
 
@@ -69,35 +72,40 @@ def add_customer(customer_yaml : str) -> None:
 # Code dégueulasse mais au moins chaque action est séparée, et cela ne vaut pas le coup de refacto 
 # pour le moment
 def __append_ids__(existing_customers : list, new_customer : dict) -> None:
-  new_customer_id = int(existing_customers[-1]['id']) + 1
+  if existing_customers:
+    new_customer_id = int(existing_customers[-1]['id']) + 1
+    new_dog_id = int(existing_customers[-1]['dog']['id']) + 1
+  else:
+    new_customer_id = 1
+    new_dog_id = 1
+
   new_customer['id'] = new_customer_id
   print("new_customer_id", new_customer_id)
 
-  new_dog_id = int(existing_customers[-1]['dog']['id']) + 1
   new_customer['dog']['id'] = new_dog_id
   print("new_dog_id", new_dog_id)
 
   new_first_ongoing_forfait_id = 1
   for c in reversed(existing_customers):
-    if len(c['ongoingForfaits']) > 0:
+    if len(c.get('ongoingForfaits', [])) > 0:
       new_first_ongoing_forfait_id = c['ongoingForfaits'][-1]['id'] + 1
       break
-  for forfait in new_customer['ongoingForfaits']:
+  for forfait in new_customer.get('ongoingForfaits', []):
     forfait['id'] = new_first_ongoing_forfait_id
     new_first_ongoing_forfait_id += 1
   print("new_first_ongoing_forfait_id", new_first_ongoing_forfait_id)
 
   new_first_ongoing_forfait_passed_session_id = 1
   for c in reversed(existing_customers):
-    if len(c['ongoingForfaits']) > 0:
-      for forfait in reversed(c['ongoingForfaits']):
-        if len(forfait['passedSessions']) > 0:
+    if len(c.get('ongoingForfaits', [])) > 0:
+      for forfait in reversed(c.get('ongoingForfaits', [])):
+        if len(forfait.get('passedSessions', [])) > 0:
           new_first_ongoing_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
           break
       if new_first_ongoing_forfait_passed_session_id != 1:
         break
-  for forfait in new_customer['ongoingForfaits']:
-    for session in forfait['passedSessions']:
+  for forfait in new_customer.get('ongoingForfaits', []):
+    for session in forfait.get('passedSessions', []):
       session['id'] = new_first_ongoing_forfait_passed_session_id
       new_first_ongoing_forfait_passed_session_id += 1
   print("new_first_ongoing_forfait_passed_session_id", new_first_ongoing_forfait_passed_session_id)
@@ -107,10 +115,10 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   # forfait won't have the same id as a passed forfait
   new_first_passed_forfait_id = 1
   for c in reversed(existing_customers):
-    if len(c['passedForfaits']) > 0:
+    if len(c.get('passedForfaits', [])) > 0:
       new_first_passed_forfait_id = c['passedForfaits'][-1]['id'] + 1
       break
-  for forfait in new_customer['passedForfaits']:
+  for forfait in new_customer.get('passedForfaits', []):
     forfait['id'] = new_first_passed_forfait_id
     new_first_passed_forfait_id += 1
   print("new_first_passed_forfait_id", new_first_passed_forfait_id)
@@ -118,98 +126,44 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   new_first_passed_forfait_passed_session_id = 1
   for c in reversed(existing_customers):
     for forfait in reversed(c.get('passedForfaits', [])):
-      if len(forfait['passedSessions']) > 0:
+      if len(forfait.get('passedSessions', [])) > 0:
         new_first_passed_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
         break
     if new_first_passed_forfait_passed_session_id != 1:
       break
   for forfait in new_customer.get('passedForfaits', []):
-    for session in forfait['passedSessions']:
+    for session in forfait.get('passedSessions', []):
       session['id'] = new_first_passed_forfait_passed_session_id
       new_first_passed_forfait_passed_session_id += 1
   print("new_first_passed_forfait_passed_session_id", new_first_passed_forfait_passed_session_id)
   
-  for d in new_customer['documents']:
-    document_id = d['filename'].split('-')[len("doc"):]
+  for d in new_customer.get('documents', []):
+    document_id = int(d['filename'].split('-')[0][len("doc"):])
     d['id'] = document_id
 
   # print("object after append id:", new_customer)
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+CUSTOMER_IMPORTS_DIR = PROJECT_ROOT / "data" / "customer-imports"
 
-yaml_dum_damien = '''
-firstname: Damien
-email: 6yE9o@example.com
-dog:
-  name: Vaya
-  age: 1
-  breed: English cocker spaniel
-  sex: F
-ongoingForfaits:
-  - type: F15
-    numberOfSessions: 15
-    passedSessions:
-      - date: 06/02/2026
-        theme: Règles de vie concernant la nourriture et les contacts jeux et caresses.
-        content: |
-          Séance règles de vie concernant la nourriture et les contacts jeux et caresses.
 
-          Nous avons aussi fait le conditionnement canette, Vaya n'est pas sensible à autre chose que la canette qui fonctionne sur elle.
-      - date: 11/02/2026
-        theme: Séance règle de vie partie territoire + solutions contre le vol d'objet.
-        content: |
-          Territoire :
-          - interdit de se cacher sous les meubles qui est un point stratégique pour elle.
-          - interdit de suivre les humains partout
-          - passer la porte en second, attendre avant d'aller voir les invités
+def load_customer_yaml_file(filename: str) -> str:
+    yaml_path = CUSTOMER_IMPORTS_DIR / filename
+    if not yaml_path.is_file():
+        raise FileNotFoundError(f"Customer YAML file not found: {yaml_path}")
+    return yaml_path.read_text(encoding="utf-8")
 
-          Solutions contre le vol :
-          - on fait exprès de mettre les objets partout, des qu'elle y va canette sinon récompense
-          - solution de la pierre d'alun dans les mouchoirs
 
-          Je joins la fiche générale des règles de vie
-      - date: 17/02/2026
-        theme: Travail du rappel et du début de patience avec le "assis".
-        content: ''
-  - type: 1 balade éducative offerte
-    numberOfSessions: 1
-    passedSessions: []
-documents:
-  - title: Bilan comportemental
-    filename: doc117117117-bilan-comportemental.pdf
-  - title: Règles de vie
-    filename: doc217217217-regles-de-vie.pdf
-'''
+def add_customer_from_file(filename: str) -> None:
+    customer_yaml = load_customer_yaml_file(filename)
+    add_customer(customer_yaml)
 
-yaml_dum_eric = '''
-firstname: Eric
-email: eric@example.com
-dog:
-  name: Maya
-  age: 2
-  sex: F
-ongoingForfaits:
-  - type: F10
-    numberOfSessions: 10
-    passedSessions:
-      - date: 20/01/2025
-        theme: Déconditionnement à l'approche d'Eric.
-        content: |
-          On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte.
-  - type: 1 balade éducative offerte
-    numberOfSessions: 1
-    passedSessions: []
-passedForfaits:
-  - type: 1 balade éducative offerte
-    numberOfSessions: 1
-    passedSessions:
-      - date: 17/02/2026
-        theme: 'Thème : Travail du rappel et du début de patience avec le "assis".'
-        content: |
-          Difficile de travailler le rappel, car Maya ne va pas loin.
-          Un trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise.
-documents:
-  - title: Règles de vie
-    filename: doc217217217-regles-de-vie.pdf
-'''
 
-add_customer(yaml_dum_eric)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        script_name = Path(sys.argv[0]).name
+        print(f"Usage: python {script_name} <customer-yaml-file>")
+        print(f"Example: python {script_name} valerie-lafayette.yaml")
+        sys.exit(1)
+
+    add_customer_from_file(sys.argv[1])

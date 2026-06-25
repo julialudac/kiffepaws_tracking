@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignore sensitive data, commit examples
+public/uploads/*
+!public/uploads/doc117117117-bilan-comportemental.pdf
+!public/uploads/doc217217217-regles-de-vie.pdf
+data/trueData.json
+data/customer-imports
+!data/customer-imports/template.yaml
+!data/customer-imports/template.yaml
