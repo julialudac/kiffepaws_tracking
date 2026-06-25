@@ -12,6 +12,7 @@ export interface Customer extends Owner {
   email?: string;
   passedForfaits?: CustomerForfait[];
   ongoingForfaits?: CustomerForfait[];
+  documents?: Upload[];
 }
 
 export interface Dog {
@@ -40,4 +41,10 @@ export interface Session {
   date: string;
   theme: string;
   content: string;
+}
+
+export interface Upload { // called 'Upload' instead of 'Document' so it won't collide with the inbuilt 'Document' interface
+  id: number;
+  title: string;
+  filename: string; // other alternative: storing the url, or having the field 'extension' instead of 'filename'
 }

@@ -1,5 +1,5 @@
-import { JSON_SERVER_URL } from "./constants";
-import { Customer } from "./entities/entitites";
+import { JSON_SERVER_URL, DOCS_DIRECTORY_URL } from "./constants";
+import { Customer, Upload } from "./entities/entitites";
 
 export const getAllCustomers = async (): Promise<Customer[]> => {
   try {
@@ -11,3 +11,9 @@ export const getAllCustomers = async (): Promise<Customer[]> => {
     throw error;
   }
 };
+
+export const getDocumentUrl = (document: Upload) => {
+  console.log(document)
+  console.log(`${DOCS_DIRECTORY_URL}/${"doc" + document.id}-${document.filename}`)
+  return `${DOCS_DIRECTORY_URL}/${document.filename}`
+}

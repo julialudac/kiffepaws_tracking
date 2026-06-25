@@ -1,5 +1,6 @@
 import React from 'react';
-import { Customer, Session, CustomerForfait } from '../entities/entitites';
+import { Customer, Session, CustomerForfait, Upload } from '../entities/entitites';
+import { DocumentIcon } from './DocumentIcon';
 
 function CustomerHeader({ customer }: { customer: Customer }) {
   return (
@@ -37,6 +38,12 @@ function CustomerView({ customer }: { customer: Customer }) {
   return (
     <div key={customer.id}>
       <CustomerHeader customer={customer} />
+      Documents :
+      <div>
+        {customer.documents && customer.documents.map((document: Upload) => (
+          <DocumentIcon key={document.id} document={document} />
+        ))}
+      </div>
       Forfaits en cours :
       <div>
         {customer.ongoingForfaits && customer.ongoingForfaits.map((forfait: CustomerForfait) => (
