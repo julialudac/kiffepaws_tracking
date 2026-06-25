@@ -45,9 +45,9 @@ ongoingForfaits:
     passedSessions: []
 documents:
   - title: Bilan comportemental
-    filename: doc1-bilan-comportemental.pdf
+    filename: doc117117117-bilan-comportemental.pdf
   - title: Règles de vie
-    filename: doc2-regles-de-vie.pdf
+    filename: doc217217217-regles-de-vie.pdf
 '''
 Note: The documents must be stored in the public/uploads directory to be accessible
 """
@@ -175,9 +175,9 @@ ongoingForfaits:
     passedSessions: []
 documents:
   - title: Bilan comportemental
-    filename: doc1-bilan-comportemental.pdf
+    filename: doc117117117-bilan-comportemental.pdf
   - title: Règles de vie
-    filename: doc2-regles-de-vie.pdf
+    filename: doc217217217-regles-de-vie.pdf
 '''
 
 yaml_dum_eric = '''
@@ -209,7 +209,7 @@ passedForfaits:
           Un trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise.
 documents:
   - title: Règles de vie
-    filename: doc2-regles-de-vie.pdf
+    filename: doc217217217-regles-de-vie.pdf
 '''
 
 add_customer(yaml_dum_eric)
