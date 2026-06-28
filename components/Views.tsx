@@ -17,7 +17,7 @@ function SessionView({ session, index }: { session: Session, index: number }) {
       <span>{index + 1}</span> ---
       <span>{session.date}</span> ---
       <span><strong>{session.theme}</strong></span>
-      <pre>{session.content}</pre>
+      <pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre>
     </div>
   )
 }
