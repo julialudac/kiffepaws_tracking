@@ -62,7 +62,7 @@ For now I see those entities :
 ([ ] Implement documents field for customer forfaits too) -> To simplyfy for now I put all the docs attached to the customer.
 ([ ] Create a script to perform a remove customer operation)
 ### Prettify the customer view
-[ ] Justify text and present each view as a block/card
+[X] Justify text and present each view as a block/card
 [ ] Customer and dog's names on big title (h2)
 [ ] Blockify other components: Forfaits en cours as a block, each forfait also, and each passed session
 [ ] Allow collapsing forfaits

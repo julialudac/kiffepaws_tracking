@@ -2,14 +2,12 @@ import React from 'react';
 import { Customer, Session, CustomerForfait, Upload } from '../entities/entitites';
 import { DocumentIcon } from './DocumentIcon';
 
-function CustomerHeader({ customer }: { customer: Customer }) {
-  return (
-    <div>
-      <h2>{customer.firstname} & {customer.dog.name}</h2>
-      ------------------------------------------------------------
-    </div>
-  )
-}
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 function SessionView({ session, index }: { session: Session, index: number }) {
   return (
@@ -36,39 +34,53 @@ function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
 
 function CustomerView({ customer }: { customer: Customer }) {
   return (
-    <div key={customer.id}>
-      <CustomerHeader customer={customer} />
-      {customer.documents && customer.documents.length > 0 && (
-        <>
-          Documents :
-          <div>
-            {customer.documents.map((document: Upload) => (
-              <div key={document.id}> <DocumentIcon document={document} /> </div>
-            ))}
-          </div>
-        </>
-      )}
-      {customer.passedForfaits && customer.passedForfaits.length > 0 && (
-        <>
-          Forfaits terminés :
-          <div>
-            {customer.passedForfaits.map((forfait: CustomerForfait) => (
-              <ForfaitView key={forfait.id} forfait={forfait} />
-            ))}
-          </div>
-        </>
-      )}
-      {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
-        <>
-          Forfaits en cours :
-          <div>
-            {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
-              <ForfaitView key={forfait.id} forfait={forfait} />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+    <Card key={customer.id} >
+      <CardHeader>
+        <CardTitle>{customer.firstname} & {customer.dog.name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {customer.documents && customer.documents.length > 0 && (
+          <Card>
+            <CardHeader>
+              Documents
+            </CardHeader>
+            <CardContent>
+              {customer.documents.map((document: Upload) => (
+                <div key={document.id}> <DocumentIcon document={document} /> </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+        {customer.passedForfaits && customer.passedForfaits.length > 0 && (
+          <Card className="mt-4">
+            <CardHeader>
+              Forfaits terminés
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {customer.passedForfaits.map((forfait: CustomerForfait) => (
+                  <ForfaitView key={forfait.id} forfait={forfait} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
+          <Card className="mt-4">
+            <CardHeader>
+              Forfaits en cours
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+                  <ForfaitView key={forfait.id} forfait={forfait} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </CardContent>
+    </Card >
   )
 }
 
