@@ -38,24 +38,36 @@ function CustomerView({ customer }: { customer: Customer }) {
   return (
     <div key={customer.id}>
       <CustomerHeader customer={customer} />
-      Documents :
-      <div>
-        {customer.documents && customer.documents.map((document: Upload) => (
-          <div key={document.id}> <DocumentIcon document={document} /> </div>
-        ))}
-      </div>
-      Forfaits en cours :
-      <div>
-        {customer.ongoingForfaits && customer.ongoingForfaits.map((forfait: CustomerForfait) => (
-          <ForfaitView key={forfait.id} forfait={forfait} />
-        ))}
-      </div>
-      Forfaits terminés :
-      <div>
-        {customer.passedForfaits && customer.passedForfaits.map((forfait: CustomerForfait) => (
-          <ForfaitView key={forfait.id} forfait={forfait} />
-        ))}
-      </div>
+      {customer.documents && customer.documents.length > 0 && (
+        <>
+          Documents :
+          <div>
+            {customer.documents.map((document: Upload) => (
+              <div key={document.id}> <DocumentIcon document={document} /> </div>
+            ))}
+          </div>
+        </>
+      )}
+      {customer.passedForfaits && customer.passedForfaits.length > 0 && (
+        <>
+          Forfaits terminés :
+          <div>
+            {customer.passedForfaits.map((forfait: CustomerForfait) => (
+              <ForfaitView key={forfait.id} forfait={forfait} />
+            ))}
+          </div>
+        </>
+      )}
+      {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
+        <>
+          Forfaits en cours :
+          <div>
+            {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+              <ForfaitView key={forfait.id} forfait={forfait} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
