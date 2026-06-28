@@ -5,18 +5,18 @@ import { DocumentIcon } from './DocumentIcon';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 
 function SessionView({ session, index }: { session: Session, index: number }) {
   return (
-    <div key={session.id}>
-      <span>{index + 1}</span> ---
-      <span>{session.date}</span> ---
-      <span><strong>{session.theme}</strong></span>
-      <pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre>
-    </div>
+    <Card key={session.id}>
+      <CardTitle>Séance n°{index + 1} - {session.theme}</CardTitle>
+      <CardDescription>{session.date}</CardDescription>
+      <CardContent><pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre></CardContent>
+    </Card>
   )
 }
 
