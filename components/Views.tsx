@@ -42,7 +42,7 @@ function CustomerView({ customer }: { customer: Customer }) {
         {customer.documents && customer.documents.length > 0 && (
           <Card>
             <CardHeader>
-              Documents
+              <CardTitle>Documents</CardTitle>
             </CardHeader>
             <CardContent>
               {customer.documents.map((document: Upload) => (
@@ -54,7 +54,7 @@ function CustomerView({ customer }: { customer: Customer }) {
         {customer.passedForfaits && customer.passedForfaits.length > 0 && (
           <Card className="mt-4">
             <CardHeader>
-              Forfaits terminés
+              <CardTitle>Forfaits terminés</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -68,7 +68,7 @@ function CustomerView({ customer }: { customer: Customer }) {
         {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
           <Card className="mt-4">
             <CardHeader>
-              Forfaits en cours
+              <CardTitle>Forfaits en cours</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
