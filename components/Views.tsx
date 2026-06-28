@@ -34,13 +34,13 @@ function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
 
 function CustomerView({ customer }: { customer: Customer }) {
   return (
-    <Card key={customer.id} >
+    <Card key={customer.id} className="bg-blue-50/70" >
       <CardHeader>
         <CardTitle>{customer.firstname} & {customer.dog.name}</CardTitle>
       </CardHeader>
       <CardContent>
         {customer.documents && customer.documents.length > 0 && (
-          <Card>
+          <Card className="bg-green-50/70">
             <CardHeader>
               <CardTitle>Documents</CardTitle>
             </CardHeader>
@@ -52,7 +52,7 @@ function CustomerView({ customer }: { customer: Customer }) {
           </Card>
         )}
         {customer.passedForfaits && customer.passedForfaits.length > 0 && (
-          <Card className="mt-4">
+          <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
             <CardHeader>
               <CardTitle>Forfaits terminés</CardTitle>
             </CardHeader>
@@ -66,7 +66,7 @@ function CustomerView({ customer }: { customer: Customer }) {
           </Card>
         )}
         {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
-          <Card className="mt-4">
+          <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
             <CardHeader>
               <CardTitle>Forfaits en cours</CardTitle>
             </CardHeader>
