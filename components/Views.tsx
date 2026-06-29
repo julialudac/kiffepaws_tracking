@@ -56,10 +56,11 @@ function CustomerView({ customer }: { customer: Customer }) {
     <Card key={customer.id} className="w-full bg-blue-50/70">
       <Collapsible>
         <CollapsibleTrigger asChild>
-          <CardHeader>
-            <CardTitle>
-              {customer.firstname} & {customer.dog.name}
-              <ChevronDownIcon />
+          {/* The group class lets the chevron react to the trigger's open/closed state. */}
+          <CardHeader className="group">
+            <CardTitle className="flex items-center justify-between gap-2">
+              <span>{customer.firstname} & {customer.dog.name}</span>
+              <ChevronDownIcon className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
             </CardTitle>
           </CardHeader>
         </CollapsibleTrigger>
