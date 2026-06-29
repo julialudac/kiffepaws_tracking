@@ -49,12 +49,11 @@ function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
   )
 }
 
-// Bug: When all customer cards are collapsed, they are all shrinked.
-// TODO: Fix
+
 function CustomerView({ customer }: { customer: Customer }) {
-  // 'asChild' necessary so the title is on one line
   return (
-    <Card key={customer.id} className="bg-blue-50/70" >
+    // Keep each customer card full-width so it doesn't shrink to the width of the longest collapsed line. -> w-full
+    <Card key={customer.id} className="w-full bg-blue-50/70">
       <Collapsible>
         <CollapsibleTrigger asChild>
           <CardHeader>
@@ -115,7 +114,9 @@ function CustomerView({ customer }: { customer: Customer }) {
 
 export function CustomerViews({ customers }: { customers: Customer[] }) {
   return (
-    <div id="customers">
+    // Let the list container span the available width so each customer card can expand to the parent width 
+    // instead of adapting to the longest line of its content -> w-full max-w-3xl
+    <div id="customers" className="w-full max-w-3xl">
       <h1>Suivi de clients</h1>
       {customers.map((customer) => (
         <React.Fragment key={customer.id}>
