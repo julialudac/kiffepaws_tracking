@@ -5,6 +5,7 @@ import { Customer, Session, CustomerForfait, Upload } from '../entities/entitite
 import { DocumentIcon } from './DocumentIcon';
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -53,10 +54,11 @@ function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
 }
 
 
-function CustomerView({ customer, open, onOpenChange }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void }) {
+function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode }) {
   return (
     // Keep each customer card full-width so it doesn't shrink to the width of the longest collapsed line. -> w-full
     <Card key={customer.id} className="w-full bg-blue-50/70">
+      {actions && <CardAction>{actions}</CardAction>}
       <Collapsible open={open} onOpenChange={onOpenChange}>
         <CollapsibleTrigger asChild>
           {/* The group class lets the chevron react to the trigger's open/closed state. */}
@@ -113,6 +115,30 @@ function CustomerView({ customer, open, onOpenChange }: { customer: Customer, op
         </CollapsibleContent>
       </Collapsible>
     </Card >
+  )
+}
+
+export function CustomerView({ customer, open, onOpenChange }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void }) {
+  return (
+    <CustomerCard
+      customer={customer}
+      open={open}
+      onOpenChange={onOpenChange}
+      // TODO next commit: Go to corresponding page
+      actions={<Button variant="default">Consulter</Button>}
+    />
+  )
+}
+
+export function CustomerDetailView({ customer }: { customer: Customer }) {
+  const [open, setOpen] = React.useState(true)
+
+  return (
+    <CustomerCard
+      customer={customer}
+      open={open}
+      onOpenChange={setOpen}
+    />
   )
 }
 
