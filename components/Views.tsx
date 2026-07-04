@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/collapsible"
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
+import Link from 'next/link';
 
 function SessionView({ session, index }: { session: Session, index: number }) {
   return (
@@ -124,8 +125,7 @@ export function CustomerView({ customer, open, onOpenChange }: { customer: Custo
       customer={customer}
       open={open}
       onOpenChange={onOpenChange}
-      // TODO next commit: Go to corresponding page
-      actions={<Button variant="default">Consulter</Button>}
+      actions={<Button variant="default"><Link href={`/customer/${customer.id}`}>Consulter</Link></Button>}
     />
   )
 }
