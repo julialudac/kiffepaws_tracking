@@ -19,14 +19,47 @@ import {
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
+import { removeSessionById } from '@/actions';
 
 function SessionView({ session, index }: { session: Session, index: number }) {
+  const deleteDialogRef = React.useRef<HTMLDialogElement>(null)
+
+  const removeSession = (sessionId: number) => {
+    removeSessionById(sessionId);
+  }
+
+  const openDeleteDialog = () => {
+    deleteDialogRef.current?.showModal()
+  }
+
+  const closeDeleteDialog = () => {
+    deleteDialogRef.current?.close()
+  }
+
   return (
-    <Card key={session.id}>
-      <CardTitle>Séance n°{index + 1} - {session.theme}</CardTitle>
-      <CardDescription>{session.date}</CardDescription>
-      <CardContent><pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre></CardContent>
-    </Card>
+    <>
+      <Card key={session.id}>
+        <CardAction><Button>Modifier ✏️</Button></CardAction>
+        <CardAction><Button onClick={openDeleteDialog}>Supprimer 🗑️</Button></CardAction>
+        <CardTitle>Séance n°{index + 1} - {session.theme}</CardTitle>
+        <CardDescription>{session.date}</CardDescription>
+        <CardContent><pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre></CardContent>
+      </Card>
+      <dialog
+        ref={deleteDialogRef}
+        className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-md p-6"
+      >
+        <p>Souhaitez-vous vraiment supprimer cette séance ?</p>
+        <div className="mt-4 flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={closeDeleteDialog}>
+            Annuler
+          </Button>
+          <Button type="button" onClick={() => { removeSession(session.id); closeDeleteDialog() }}>
+            Supprimer
+          </Button>
+        </div>
+      </dialog>
+    </>
   )
 }
 
@@ -132,7 +165,6 @@ export function CustomerView({ customer, open, onOpenChange }: { customer: Custo
 
 export function CustomerDetailView({ customer }: { customer: Customer }) {
   const [open, setOpen] = React.useState(true)
-
   return (
     <CustomerCard
       customer={customer}

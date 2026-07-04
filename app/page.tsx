@@ -1,6 +1,6 @@
 import { CustomerViews } from "@/components/Views";
 import { Customer } from "@/entities/entitites";
-import { getAllCustomers } from "@/utils";
+import { getAllCustomers } from "@/actions";
 
 
 export default async function Home() {
