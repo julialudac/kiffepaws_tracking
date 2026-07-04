@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import { Customer, Session, CustomerForfait, Upload } from '../entities/entitites';
 import { DocumentIcon } from './DocumentIcon';
@@ -13,6 +15,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
 
 function SessionView({ session, index }: { session: Session, index: number }) {
@@ -50,11 +53,11 @@ function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
 }
 
 
-function CustomerView({ customer }: { customer: Customer }) {
+function CustomerView({ customer, open, onOpenChange }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void }) {
   return (
     // Keep each customer card full-width so it doesn't shrink to the width of the longest collapsed line. -> w-full
     <Card key={customer.id} className="w-full bg-blue-50/70">
-      <Collapsible>
+      <Collapsible open={open} onOpenChange={onOpenChange}>
         <CollapsibleTrigger asChild>
           {/* The group class lets the chevron react to the trigger's open/closed state. */}
           <CardHeader className="group">
@@ -114,14 +117,31 @@ function CustomerView({ customer }: { customer: Customer }) {
 }
 
 export function CustomerViews({ customers }: { customers: Customer[] }) {
+  const [openMap, setOpenMap] = React.useState<Record<number, boolean>>({})
+  const allOpen = customers.length > 0 && customers.every((customer) => openMap[customer.id])
+
+  function toggleAll() {
+    const nextOpen = !allOpen
+    setOpenMap(Object.fromEntries(customers.map((customer) => [customer.id, nextOpen])))
+  }
+
   return (
-    // Let the list container span the available width so each customer card can expand to the parent width 
+    // Let the list container span the available width so each customer card can expand to the parent width
     // instead of adapting to the longest line of its content -> w-full max-w-3xl
     <div id="customers" className="w-full max-w-3xl">
-      <h1>Suivi de clients</h1>
+      <div className="flex items-center justify-between gap-2">
+        <h1>Suivi de clients</h1>
+        <Button variant="outline" size="sm" onClick={toggleAll}>
+          {allOpen ? "Tout réduire" : "Tout développer"}
+        </Button>
+      </div>
       {customers.map((customer) => (
         <React.Fragment key={customer.id}>
-          <CustomerView customer={customer} />
+          <CustomerView
+            customer={customer}
+            open={!!openMap[customer.id]}
+            onOpenChange={(open) => setOpenMap((prev) => ({ ...prev, [customer.id]: open }))}
+          />
           <br /> <br />
         </React.Fragment>
       ))}
