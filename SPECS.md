@@ -68,7 +68,7 @@ For now I see those entities :
 [X] Allow collapsing forfaits
 [X] Add a collapse all button and a expand all button
 ### CRUD (try Claude to do that??)
-[ ] R customer : Add a button to consult/view details on one customer -> will redirect to a route like "/customers/{id}" where only the selected customer is displayed. The "page" will also contain a "Retour" button to go back home.
+[X] R customer : Add a button to consult/view details on one customer -> will redirect to a route like "/customers/{id}" where only the selected customer is displayed. The "page" will also contain a "Retour" button to go back home.
 [ ] C document: For a customer, add a button to add a document, either an existing one or a new one
 [ ] D document: For a customer, add a button to delete a document. If there is no reference left on the document, this one is removed from the cloud storage
 [ ] C customer forfait
