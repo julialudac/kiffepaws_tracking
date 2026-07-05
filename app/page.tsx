@@ -1,4 +1,4 @@
-import { CustomerViews } from "@/components/Views";
+import { CustomerViews } from "@/components/CustomerViews";
 import { Customer } from "@/entities/entitites";
 import { getAllCustomers } from "@/actions";
 

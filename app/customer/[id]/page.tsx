@@ -1,4 +1,4 @@
-import { CustomerDetailView } from "@/components/Views";
+import { CustomerDetailView } from "@/components/CustomerViews";
 import { fetchCustomer } from "./actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
