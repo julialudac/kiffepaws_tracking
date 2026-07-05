@@ -73,4 +73,8 @@ For now I see those entities :
 [ ] D document: For a customer, add a button to delete a document. If there is no reference left on the document, this one is removed from the cloud storage
 [ ] C customer forfait
 [ ] C session
+[ ] Convert ongoingForfait into passedForfait if nb passed forfaits == nb max forfaits
 [ ] etc
+## Technical debt
+[ ] Refactor to remove duplicates (use tools to detect them)
+[ ] Learn how to use Playwright to add some tests

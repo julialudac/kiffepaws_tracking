@@ -53,6 +53,27 @@ const updateCustomer = async (customer: Customer): Promise<void> => {
   revalidatePath("/");
 };
 
+
+export const addPassedSessionToForfait = async (forfaitId: number, session: Session): Promise<void> => {
+  try {
+    const customers = await getAllCustomers();
+
+    const customer = customers.find((c) =>
+      c.ongoingForfaits?.some((f) => f.id === forfaitId)
+    );
+    if (!customer) return;
+
+    const forfait = customer.ongoingForfaits?.find((f) => f.id === forfaitId);
+    if (!forfait) return;
+
+    forfait.passedSessions.push(session);
+    await updateCustomer(customer);
+  } catch (error) {
+    console.error("Error adding session:", error);
+    throw error;
+  }
+};
+
 export const updateSessionById = async (
   id: number,
   data: { theme?: string; date?: string; content?: string }
