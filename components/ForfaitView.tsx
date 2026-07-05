@@ -7,24 +7,23 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
 import { addPassedSessionToForfait } from '@/actions';
 import { SessionView } from './SessionView';
 
 export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
-  const addPassedSessionDialogRef = React.useRef<HTMLDialogElement>(null);
+  const [addOpen, setAddOpen] = React.useState(false);
   const newPassedSessionTitleRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionDateRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionContentRef = React.useRef<HTMLTextAreaElement>(null);
-
-  const openAddPassedSessionDialog = () => {
-    addPassedSessionDialogRef.current?.showModal();
-  }
-
-  const closeAddPassedSessionDialog = () => {
-    addPassedSessionDialogRef.current?.close();
-  }
 
   const addPassedSession = () => {
     const newSession: Session = {
@@ -36,7 +35,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
       content: newPassedSessionContentRef.current!.value
     };
     addPassedSessionToForfait(forfait.id, newSession);
-    closeAddPassedSessionDialog();
+    setAddOpen(false);
   }
 
   return (
@@ -55,7 +54,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           </button>
         </CollapsibleTrigger>
         {forfait.passedSessions.length < forfait.numberOfSessions && (
-          <Button onClick={openAddPassedSessionDialog}>➕ Ajouter un rapport de séance</Button>
+          <Button onClick={() => setAddOpen(true)}>➕ Ajouter un rapport de séance</Button>
         )}
         <CollapsibleContent className="mt-2 space-y-2">
           {forfait.passedSessions.map((session: Session, index: number) => (
@@ -63,26 +62,32 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           ))}
         </CollapsibleContent>
       </Collapsible>
-      <dialog
-        ref={addPassedSessionDialogRef}
-        className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-md p-6">
-        <p className="font-medium">Ajouter un nouveau rapport de séance</p>
-        <label className="flex flex-col gap-1" htmlFor="title">Titre</label>
-        <input className="rounded-md border px-2 py-1" type="text" id="title" name="title" defaultValue={`Séance ${forfait.passedSessions.length + 1}`} ref={newPassedSessionTitleRef} />
-        <label className="flex flex-col gap-1" htmlFor="date">Date </label>
-        <input
-          className="rounded-md border px-2 py-1"
-          type="text"
-          id="date"
-          name="date"
-          defaultValue={new Date().toLocaleDateString("fr-FR")}
-          ref={newPassedSessionDateRef}
-        />
-        <label className="flex flex-col gap-1" htmlFor="content">Contenu</label>
-        <textarea className="rounded-md border px-2 py-1" id="content" name="content" defaultValue="" ref={newPassedSessionContentRef}></textarea>
-        <Button onClick={addPassedSession}>Enregistrer</Button>
-        <Button onClick={closeAddPassedSessionDialog}>Annuler</Button>
-      </dialog>
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter un nouveau rapport de séance</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-3">
+            <label className="flex flex-col gap-1" htmlFor="title">Titre</label>
+            <input className="rounded-md border px-2 py-1" type="text" id="title" name="title" defaultValue={`Séance ${forfait.passedSessions.length + 1}`} ref={newPassedSessionTitleRef} />
+            <label className="flex flex-col gap-1" htmlFor="date">Date</label>
+            <input
+              className="rounded-md border px-2 py-1"
+              type="text"
+              id="date"
+              name="date"
+              defaultValue={new Date().toLocaleDateString("fr-FR")}
+              ref={newPassedSessionDateRef}
+            />
+            <label className="flex flex-col gap-1" htmlFor="content">Contenu</label>
+            <textarea className="rounded-md border px-2 py-1" id="content" name="content" defaultValue="" ref={newPassedSessionContentRef}></textarea>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>Annuler</Button>
+            <Button type="button" onClick={addPassedSession}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
