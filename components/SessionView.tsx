@@ -17,6 +17,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { removeSessionById, updateSessionById } from '@/actions';
 
@@ -70,34 +73,20 @@ export function SessionView({ session, index }: { session: Session, index: numbe
           <DialogHeader>
             <DialogTitle>Modifier la séance</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col gap-3">
-            <label className="flex flex-col gap-1">
-              Titre
-              <input
-                ref={titleInputRef}
-                type="text"
-                defaultValue={session.theme}
-                className="rounded-md border px-2 py-1"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              Date
-              <input
-                ref={dateInputRef}
-                type="text"
-                defaultValue={session.date}
-                className="rounded-md border px-2 py-1"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              Contenu
-              <textarea
-                ref={contentInputRef}
-                defaultValue={session.content}
-                className="min-h-32 rounded-md border px-2 py-1"
-              />
-            </label>
-          </div>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="edit-title">Titre</FieldLabel>
+              <Input id="edit-title" ref={titleInputRef} type="text" defaultValue={session.theme} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="edit-date">Date</FieldLabel>
+              <Input id="edit-date" ref={dateInputRef} type="text" defaultValue={session.date} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="edit-content">Contenu</FieldLabel>
+              <Textarea id="edit-content" ref={contentInputRef} defaultValue={session.content} />
+            </Field>
+          </FieldGroup>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>
               Annuler

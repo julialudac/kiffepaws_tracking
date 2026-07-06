@@ -14,6 +14,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
 import { addPassedSessionToForfait } from '@/actions';
@@ -67,21 +70,26 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           <DialogHeader>
             <DialogTitle>Ajouter un nouveau rapport de séance</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col gap-3">
-            <label className="flex flex-col gap-1" htmlFor="title">Titre</label>
-            <input className="rounded-md border px-2 py-1" type="text" id="title" name="title" defaultValue={`Séance ${forfait.passedSessions.length + 1}`} ref={newPassedSessionTitleRef} />
-            <label className="flex flex-col gap-1" htmlFor="date">Date</label>
-            <input
-              className="rounded-md border px-2 py-1"
-              type="text"
-              id="date"
-              name="date"
-              defaultValue={new Date().toLocaleDateString("fr-FR")}
-              ref={newPassedSessionDateRef}
-            />
-            <label className="flex flex-col gap-1" htmlFor="content">Contenu</label>
-            <textarea className="rounded-md border px-2 py-1" id="content" name="content" defaultValue="" ref={newPassedSessionContentRef}></textarea>
-          </div>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="title">Titre</FieldLabel>
+              <Input type="text" id="title" name="title" defaultValue={`Séance ${forfait.passedSessions.length + 1}`} ref={newPassedSessionTitleRef} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="date">Date</FieldLabel>
+              <Input
+                type="text"
+                id="date"
+                name="date"
+                defaultValue={new Date().toLocaleDateString("fr-FR")}
+                ref={newPassedSessionDateRef}
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="content">Contenu</FieldLabel>
+              <Textarea id="content" name="content" defaultValue="" ref={newPassedSessionContentRef} />
+            </Field>
+          </FieldGroup>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>Annuler</Button>
             <Button type="button" onClick={addPassedSession}>Enregistrer</Button>
