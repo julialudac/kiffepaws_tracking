@@ -23,8 +23,7 @@ export interface Dog {
   sex?: string;
 }
 
-// Not used yet
-interface Forfait {
+export interface Forfait {
   id: number;
   name: string;
   numberOfSessions: number;

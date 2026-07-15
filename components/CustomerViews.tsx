@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Customer, CustomerForfait, Upload } from '../entities/entitites';
+import { Customer, CustomerForfait, Upload, Forfait } from '../entities/entitites';
 import { DocumentIcon } from './DocumentIcon';
 import {
   Card,
@@ -15,72 +15,157 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList
+} from "@/components/ui/combobox";
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import { ForfaitView } from './ForfaitView';
+import { Field, FieldGroup, FieldLabel } from './ui/field';
+import { addForfaitToCustomer } from '@/actions';
 
+const getAllForfaits = (): Forfait[] => {
+  return [
+    { id: 1, name: "F5", numberOfSessions: 5 },
+    { id: 2, name: "F10", numberOfSessions: 10 },
+    { id: 3, name: "F15", numberOfSessions: 15 },
+    { id: 4, name: "F20", numberOfSessions: 20 },
+    { id: 5, name: "Forfait 10 balades éducatives", numberOfSessions: 10 },
+    { id: 6, name: "1 balade éducative offerte", numberOfSessions: 1 },
+    { id: 7, name: "Séance à l'unité", numberOfSessions: 1 },
+  ]
+}
+
+
+// TODO about dialog footer : dups in several components
+// TODO refactor dups here 
+// Note : There is a Radix UI bug that prevents to select an element in a combobox which is inside a dialog, with mouse and we have to select with keyboard!
+// See https://github.com/shadcn-ui/ui/issues/1748 . Same issue with a drawer instead of a dialog. 
 function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode }) {
+  const [isAddForfaitModalOpen, setIsAddForfaitModalOpen] = React.useState(false);
+  const newForfaitTypeRef = React.useRef<HTMLInputElement>(null);
+
+  // TODO replace by a context (useContext)
+  // First, I fake the list of forfaits. TODO : put forfaits in DB
+  const existingForfaits: Forfait[] = getAllForfaits();
+
+  const addNewForfait = () => {
+    const selectedForfaitName = newForfaitTypeRef.current!.value;
+    if (!selectedForfaitName) {
+      alert("Veuillez sélectionner un type de forfait.");
+      return;
+    }
+    const selectedForfait: Forfait = existingForfaits.find(forfait => forfait.name === selectedForfaitName)!;
+    addForfaitToCustomer(customer.id, selectedForfait);
+    setIsAddForfaitModalOpen(false);
+  }
+
+
   return (
     // Keep each customer card full-width so it doesn't shrink to the width of the longest collapsed line. -> w-full
-    <Card key={customer.id} className="w-full bg-blue-50/70">
-      {actions && <CardAction>{actions}</CardAction>}
-      <Collapsible open={open} onOpenChange={onOpenChange}>
-        <CollapsibleTrigger asChild>
-          {/* The group class lets the chevron react to the trigger's open/closed state. */}
-          <CardHeader className="group">
-            <CardTitle className="flex items-center justify-between gap-2">
-              <span>{customer.firstname} & {customer.dog.name}</span>
-              <ChevronDownIcon className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-            </CardTitle>
-          </CardHeader>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <CardContent>
-            {customer.documents && customer.documents.length > 0 && (
-              <Card className="bg-green-50 /70">
-                <CardHeader>
-                  <CardTitle>Documents</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {customer.documents.map((document: Upload) => (
-                    <div key={document.id}> <DocumentIcon document={document} /> </div>
-                  ))}
-                </CardContent>
-              </Card>
-            )}
-            {customer.passedForfaits && customer.passedForfaits.length > 0 && (
-              <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
-                <CardHeader>
-                  <CardTitle>Forfaits terminés</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {customer.passedForfaits.map((forfait: CustomerForfait) => (
-                      <ForfaitView key={forfait.id} forfait={forfait} />
+    <>
+      <Card key={customer.id} className="w-full bg-blue-50/70">
+        {actions && <CardAction>{actions}</CardAction>}
+        <Collapsible open={open} onOpenChange={onOpenChange}>
+          <CollapsibleTrigger asChild>
+            {/* The group class lets the chevron react to the trigger's open/closed state. */}
+            <CardHeader className="group">
+              <CardTitle className="flex items-center justify-between gap-2">
+                <span>{customer.firstname} & {customer.dog.name}</span>
+                <ChevronDownIcon className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent>
+              {customer.documents && customer.documents.length > 0 && (
+                <Card className="bg-green-50 /70">
+                  <CardHeader>
+                    <CardTitle>Documents</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {customer.documents.map((document: Upload) => (
+                      <div key={document.id}> <DocumentIcon document={document} /> </div>
                     ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-            {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
-              <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
-                <CardHeader>
-                  <CardTitle>Forfaits en cours</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
-                      <ForfaitView key={forfait.id} forfait={forfait} />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </CardContent>
-        </CollapsibleContent>
-      </Collapsible>
-    </Card >
+                  </CardContent>
+                </Card>
+              )}
+              {customer.passedForfaits && customer.passedForfaits.length > 0 && (
+                <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
+                  <CardHeader>
+                    <CardTitle>Forfaits terminés</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {customer.passedForfaits.map((forfait: CustomerForfait) => (
+                        <ForfaitView key={forfait.id} forfait={forfait} />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+              {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
+                <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
+                  <CardHeader>
+                    <CardTitle>Forfaits en cours</CardTitle>
+                    <Button onClick={() => setIsAddForfaitModalOpen(true)}>➕ Ajouter un nouveau forfait</Button>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+                        <ForfaitView key={forfait.id} forfait={forfait} />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </CardContent>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card >
+      <Dialog open={isAddForfaitModalOpen} onOpenChange={setIsAddForfaitModalOpen}>
+        <DialogContent onInteractOutside={(e) => { e.preventDefault() }}>
+          <DialogHeader>
+            <DialogTitle>Ajouter un nouveau forfait</DialogTitle>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="forfaitSelect">Type de forfait</FieldLabel>
+              <Combobox items={existingForfaits} name="forfaitSelect" id="forfaitSelect">
+                <ComboboxInput ref={newForfaitTypeRef} placeholder="Select a framework" />
+                <ComboboxContent>
+                  <ComboboxList>
+                    {(forfait: Forfait) => (
+                      <ComboboxItem key={forfait.id} value={forfait.name}>
+                        {forfait.name} ({forfait.numberOfSessions} séances)
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddForfaitModalOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={addNewForfait}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 

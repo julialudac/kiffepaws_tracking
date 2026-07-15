@@ -23,7 +23,7 @@ import { addPassedSessionToForfait } from '@/actions';
 import { SessionView } from './SessionView';
 
 export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
-  const [addOpen, setAddOpen] = React.useState(false);
+  const [isAddSessionModalOpen, setIsAddSessionModalOpen] = React.useState(false);
   const newPassedSessionTitleRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionDateRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionContentRef = React.useRef<HTMLTextAreaElement>(null);
@@ -38,7 +38,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
       content: newPassedSessionContentRef.current!.value
     };
     addPassedSessionToForfait(forfait.id, newSession);
-    setAddOpen(false);
+    setIsAddSessionModalOpen(false);
   }
 
   return (
@@ -57,7 +57,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           </button>
         </CollapsibleTrigger>
         {forfait.passedSessions.length < forfait.numberOfSessions && (
-          <Button onClick={() => setAddOpen(true)}>➕ Ajouter un rapport de séance</Button>
+          <Button onClick={() => setIsAddSessionModalOpen(true)}>➕ Ajouter un rapport de séance</Button>
         )}
         <CollapsibleContent className="mt-2 space-y-2">
           {forfait.passedSessions.map((session: Session, index: number) => (
@@ -65,7 +65,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           ))}
         </CollapsibleContent>
       </Collapsible>
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+      <Dialog open={isAddSessionModalOpen} onOpenChange={setIsAddSessionModalOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Ajouter un nouveau rapport de séance</DialogTitle>
@@ -91,7 +91,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
             </Field>
           </FieldGroup>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>Annuler</Button>
+            <Button type="button" variant="outline" onClick={() => setIsAddSessionModalOpen(false)}>Annuler</Button>
             <Button type="button" onClick={addPassedSession}>Enregistrer</Button>
           </DialogFooter>
         </DialogContent>

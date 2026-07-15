@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { JSON_SERVER_URL } from "./constants";
-import { Customer, CustomerForfait, Session } from "./entities/entitites";
+import { Customer, CustomerForfait, Session, Forfait } from "./entities/entitites";
 
 export const getAllCustomers = async (): Promise<Customer[]> => {
   try {
@@ -109,3 +109,27 @@ export const removeSessionById = async (id: number): Promise<void> => {
     throw error;
   }
 };
+
+export const addForfaitToCustomer = async (customerId: number, forfait: Forfait): Promise<void> => {
+  try {
+    const customers = await getAllCustomers();
+    const customer = customers.find((c) => c.id === customerId);
+    if (!customer) return;
+
+    const newCustomerForfait: CustomerForfait = {
+      id: Date.now(),
+      type: forfait.name,
+      numberOfSessions: forfait.numberOfSessions,
+      passedSessions: [],
+    };
+
+    if (!customer.ongoingForfaits) {
+      customer.ongoingForfaits = [];
+    }
+    customer.ongoingForfaits.push(newCustomerForfait);
+    await updateCustomer(customer);
+  } catch (error) {
+    console.error("Error adding forfait:", error);
+    throw error;
+  }
+}
