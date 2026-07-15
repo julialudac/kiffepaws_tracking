@@ -5,6 +5,7 @@ import { getAllCustomers, getAllForfaits } from "@/actions";
 
 export default async function Home() {
   // TODO use context to avoid passing props down the component tree. For now, I will pass the customers and forfaits as props to the CustomerViews component.
+  // Same logic applies to the CustomerDetailView component, which is used in the customer/[id]/page.tsx file. We will pass the customer and forfaits as props to the CustomerDetailView component for now.
   const customers: Customer[] = await getAllCustomers();
   const existingForfaits: Forfait[] = await getAllForfaits();
   return (

@@ -1,5 +1,6 @@
 import { CustomerDetailView } from "@/components/CustomerViews";
 import { fetchCustomer } from "./actions";
+import { getAllForfaits } from "@/actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -9,6 +10,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params;
 
   const customer = await fetchCustomer(Number(id));
+  const forfaits = await getAllForfaits();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -16,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <Button variant="default" className="self-start">
           <Link href="/">← Retourner à la liste des suivis client</Link>
         </Button>
-        <CustomerDetailView customer={customer} />
+        <CustomerDetailView customer={customer} forfaits={forfaits} />
       </main>
     </div>
   );
