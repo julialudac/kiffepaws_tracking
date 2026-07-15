@@ -1,8 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Customer, CustomerForfait, Upload, Forfait } from '../entities/entitites';
-import { DocumentIcon } from './DocumentIcon';
+import { Customer, CustomerForfait, Forfait } from '../entities/entitites';
 import {
   Card,
   CardAction,
@@ -35,6 +34,7 @@ import Link from 'next/link';
 import { ForfaitView } from './ForfaitView';
 import { Field, FieldGroup, FieldLabel } from './ui/field';
 import { addForfaitToCustomer } from '@/actions';
+import { DocumentsView } from './DocumentsView';
 
 // TODO about dialog footer : dups in several components
 // TODO refactor dups here 
@@ -75,18 +75,7 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
           </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent>
-              {customer.documents && customer.documents.length > 0 && (
-                <Card className="bg-green-50 /70">
-                  <CardHeader>
-                    <CardTitle>Documents</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {customer.documents.map((document: Upload) => (
-                      <div key={document.id}> <DocumentIcon document={document} /> </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              )}
+              <DocumentsView documents={customer.documents} />
               {passedForfaits.length > 0 && (
                 <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
                   <CardHeader>
