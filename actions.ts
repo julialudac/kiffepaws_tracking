@@ -83,6 +83,9 @@ export const addPassedSessionToForfait = async (forfaitId: number, session: Sess
     if (!forfait) return;
 
     forfait.passedSessions.push(session);
+    if (forfait.passedSessions.length >= forfait.numberOfSessions) {
+      forfait.isPassed = true;
+    }
     await updateCustomer(customer);
   } catch (error) {
     console.error("Error adding session:", error);
@@ -119,6 +122,9 @@ export const removeSessionById = async (id: number): Promise<void> => {
     const { customer, forfait, session } = location;
     const sessionIndex = forfait.passedSessions.findIndex((s) => s.id === session.id);
     forfait.passedSessions.splice(sessionIndex, 1);
+    if (forfait.isPassed && forfait.passedSessions.length < forfait.numberOfSessions) {
+      forfait.isPassed = false;
+    }
     await updateCustomer(customer);
   } catch (error) {
     console.error("Error removing session:", error);
