@@ -5,7 +5,7 @@ dog:
   age: 1
   breed: English cocker spaniel
   sex: F
-ongoingForfaits:
+customerForfaits:
   - type: F15
     numberOfSessions: 15
     passedSessions:
@@ -31,9 +31,11 @@ ongoingForfaits:
       - date: 17/02/2026
         theme: Travail du rappel et du début de patience avec le "assis".
         content: ''
+    isPassed: false
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions: []
+    isPassed: false
 documents:
   - title: Bilan comportemental
     filename: doc117117117-bilan-comportemental.pdf

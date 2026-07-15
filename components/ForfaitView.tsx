@@ -22,6 +22,7 @@ import { ChevronDownIcon } from 'lucide-react';
 import { addPassedSessionToForfait, removeForfaitById } from '@/actions';
 import { SessionView } from './SessionView';
 
+// TODO remove forfait modal is dup with remove session modal. Refactor to avoid dup code.
 export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
   const [isAddSessionModalOpen, setIsAddSessionModalOpen] = React.useState(false);
   const newPassedSessionTitleRef = React.useRef<HTMLInputElement>(null);

@@ -10,12 +10,13 @@
         "name": "Rex",
         "breed": "German shepherd"
       },
-      "ongoingForfaits": [
+      "customerForfaits": [
         {
           "id": 1,
           "type": "F15",
           "numberOfSessions": 15,
-          "passedSessions": []
+          "passedSessions": [],
+          "isPassed": false
         }
       ]
     },
@@ -29,18 +30,32 @@
         "breed": "English cocker spaniel",
         "sex": "F"
       },
-      "ongoingForfaits": [
+      "documents": [
+        {
+          "id": 1,
+          "title": "Bilan comportemental",
+          "filename": "doc117117117-bilan-comportemental.pdf"
+        },
+        {
+          "id": 2,
+          "title": "Règles de vie",
+          "filename": "doc217217217-regles-de-vie.pdf"
+        }
+      ],
+      "customerForfaits": [
         {
           "id": 2,
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
-          "passedSessions": []
+          "passedSessions": [],
+          "isPassed": false
         },
         {
           "id": 3,
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
-          "passedSessions": []
+          "passedSessions": [],
+          "isPassed": false
         },
         {
           "id": 4,
@@ -65,19 +80,8 @@
               "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
               "content": ""
             }
-          ]
-        }
-      ],
-      "documents": [
-        {
-          "id": 1,
-          "title": "Bilan comportemental",
-          "filename": "doc117117117-bilan-comportemental.pdf"
-        },
-        {
-          "id": 2,
-          "title": "Règles de vie",
-          "filename": "doc217217217-regles-de-vie.pdf"
+          ],
+          "isPassed": false
         }
       ]
     },
@@ -91,22 +95,7 @@
         "name": "Maya",
         "age": 2
       },
-      "passedForfaits": [
-        {
-          "id": 6,
-          "type": "1 balade éducative offerte",
-          "numberOfSessions": 1,
-          "passedSessions": [
-            {
-              "id": 8,
-              "date": "17/02/2026",
-              "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
-              "content": "Difficile de travailler le rappel, car Maya ne va pas loin.\nUn trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise."
-            }
-          ]
-        }
-      ],
-      "ongoingForfaits": [
+      "customerForfaits": [
         {
           "id": 5,
           "type": "F10",
@@ -118,13 +107,29 @@
               "theme": "Thème : déconditionnement à l'approche d'Eric.",
               "content": "On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte."
             }
-          ]
+          ],
+          "isPassed": false
         },
         {
           "id": 7,
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
-          "passedSessions": []
+          "passedSessions": [],
+          "isPassed": false
+        },
+        {
+          "id": 6,
+          "type": "1 balade éducative offerte",
+          "numberOfSessions": 1,
+          "passedSessions": [
+            {
+              "id": 8,
+              "date": "17/02/2026",
+              "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
+              "content": "Difficile de travailler le rappel, car Maya ne va pas loin.\nUn trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise."
+            }
+          ],
+          "isPassed": true
         }
       ]
     }

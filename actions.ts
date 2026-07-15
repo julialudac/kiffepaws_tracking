@@ -45,7 +45,7 @@ type SessionLocation = {
 
 const findSessionLocation = (customers: Customer[], sessionId: number): SessionLocation | undefined => {
   for (const customer of customers) {
-    for (const forfait of [...(customer.ongoingForfaits || []), ...(customer.passedForfaits || [])]) {
+    for (const forfait of customer.customerForfaits || []) {
       const session = forfait.passedSessions.find((session) => session.id === sessionId);
       if (session) return { customer, forfait, session };
     }
@@ -55,7 +55,7 @@ const findSessionLocation = (customers: Customer[], sessionId: number): SessionL
 
 const findClientByClientForfaitId = (customers: Customer[], forfaitId: number): Customer | undefined => {
   const customer = customers.find((c) =>
-    c.ongoingForfaits?.some((f) => f.id === forfaitId)
+    c.customerForfaits?.some((f) => f.id === forfaitId)
   );
   return customer;
 }
@@ -79,7 +79,7 @@ export const addPassedSessionToForfait = async (forfaitId: number, session: Sess
     const customer = findClientByClientForfaitId(customers, forfaitId);
     if (!customer) return;
 
-    const forfait = customer.ongoingForfaits?.find((f) => f.id === forfaitId);
+    const forfait = customer.customerForfaits?.find((f) => f.id === forfaitId);
     if (!forfait) return;
 
     forfait.passedSessions.push(session);
@@ -137,12 +137,13 @@ export const addForfaitToCustomer = async (customerId: number, forfait: Forfait)
       type: forfait.name,
       numberOfSessions: forfait.numberOfSessions,
       passedSessions: [],
+      isPassed: false,
     };
 
-    if (!customer.ongoingForfaits) {
-      customer.ongoingForfaits = [];
+    if (!customer.customerForfaits) {
+      customer.customerForfaits = [];
     }
-    customer.ongoingForfaits.push(newCustomerForfait);
+    customer.customerForfaits.push(newCustomerForfait);
     await updateCustomer(customer);
   } catch (error) {
     console.error("Error adding forfait:", error);
@@ -156,7 +157,7 @@ export const removeForfaitById = async (forfaitId: number): Promise<void> => {
     const customer = findClientByClientForfaitId(customers, forfaitId);
     if (!customer) return;
 
-    customer.ongoingForfaits = customer.ongoingForfaits?.filter((f) => f.id !== forfaitId);
+    customer.customerForfaits = customer.customerForfaits?.filter((f) => f.id !== forfaitId);
     await updateCustomer(customer);
   } catch (error) {
     console.error("Error removing forfait:", error);

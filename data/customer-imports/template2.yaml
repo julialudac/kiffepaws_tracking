@@ -4,7 +4,7 @@ dog:
   name: Maya
   age: 2
   sex: F
-ongoingForfaits:
+customerForfaits:
   - type: F10
     numberOfSessions: 10
     passedSessions:
@@ -12,10 +12,11 @@ ongoingForfaits:
         theme: Déconditionnement à l'approche d'Eric.
         content: |
           On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte.
+    isPassed: false
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions: []
-passedForfaits:
+    isPassed: false
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions:
@@ -24,6 +25,7 @@ passedForfaits:
         content: |
           Difficile de travailler le rappel, car Maya ne va pas loin.
           Un trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise.
+    isPassed: true
 documents:
   - title: Règles de vie
     filename: doc217217217-regles-de-vie.pdf

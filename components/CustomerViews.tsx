@@ -43,6 +43,8 @@ import { addForfaitToCustomer } from '@/actions';
 function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode, forfaits: Forfait[] }) {
   const [isAddForfaitModalOpen, setIsAddForfaitModalOpen] = React.useState(false);
   const newForfaitTypeRef = React.useRef<HTMLInputElement>(null);
+  const ongoingForfaits = customer.customerForfaits?.filter((f) => !f.isPassed) ?? [];
+  const passedForfaits = customer.customerForfaits?.filter((f) => f.isPassed) ?? [];
 
   const addNewForfait = () => {
     const selectedForfaitName = newForfaitTypeRef.current!.value;
@@ -85,21 +87,21 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
                   </CardContent>
                 </Card>
               )}
-              {customer.passedForfaits && customer.passedForfaits.length > 0 && (
+              {passedForfaits.length > 0 && (
                 <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
                   <CardHeader>
                     <CardTitle>Forfaits terminés</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {customer.passedForfaits.map((forfait: CustomerForfait) => (
+                      {passedForfaits.map((forfait: CustomerForfait) => (
                         <ForfaitView key={forfait.id} forfait={forfait} />
                       ))}
                     </div>
                   </CardContent>
                 </Card>
               )}
-              {customer.ongoingForfaits && customer.ongoingForfaits.length > 0 && (
+              {ongoingForfaits.length > 0 && (
                 <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
                   <CardHeader>
                     <CardTitle>Forfaits en cours</CardTitle>
@@ -107,7 +109,7 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {customer.ongoingForfaits.map((forfait: CustomerForfait) => (
+                      {ongoingForfaits.map((forfait: CustomerForfait) => (
                         <ForfaitView key={forfait.id} forfait={forfait} />
                       ))}
                     </div>

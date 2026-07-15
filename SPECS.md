@@ -13,15 +13,15 @@ For each we display :
 ## Entities (last update 17/06/26)
 For now I see those entities :
 - Owner : firstname, surname?, email?, dog
-- Customer : a subclass of Owner, with property ongoing packages
+- Customer : a subclass of Owner, with property customerForfaits
 - Dog : name, age?, breed?, sex?, owner
 - Forfait : name (which is the name of the type), number of sessions
-- CustomerForfait : type, passed sessions. It reprensents an instance of a 'Forfait'
+- CustomerForfait : type, passed sessions, isPassed. It reprensents an instance of a 'Forfait'
 - Session : date; theùe, content.
 ### Relationships
 - an owner has one dog (for now)
 - a dog has one owner
-- a customer has one or more ongoing forfaits
+- a customer has one or more customer forfaits, each either ongoing or passed (isPassed)
 - a forfait has one or more passed sessions 
 ### Example of final list of clients given to the frontend
 ```[{
@@ -34,11 +34,12 @@ For now I see those entities :
       age: 1,
       breed: 'English cocker spaniel'
     },
-    ongoingForfaits: [
+    customerForfaits: [
       {
         id: 1,
         type: 'F15',
         numberOfSessions: 15,
+        isPassed: false,
         passedSessions: [{
           id: 1,
           date: new Date('2026-02-06'),

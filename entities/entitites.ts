@@ -10,8 +10,7 @@ export interface Owner {
 
 export interface Customer extends Owner {
   email?: string;
-  passedForfaits?: CustomerForfait[];
-  ongoingForfaits?: CustomerForfait[];
+  customerForfaits?: CustomerForfait[];
   documents?: Upload[];
 }
 
@@ -34,6 +33,7 @@ export interface CustomerForfait {
   type: string;
   numberOfSessions: number;
   passedSessions: Session[];
+  isPassed: boolean;
 }
 
 export interface Session {

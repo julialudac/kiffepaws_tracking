@@ -17,7 +17,7 @@ dog:
   age: 1
   breed: English cocker spaniel
   sex: F
-ongoingForfaits:
+customerForfaits:
   - type: F15
     numberOfSessions: 15
     passedSessions:
@@ -43,9 +43,11 @@ ongoingForfaits:
       - date: 17/02/2026
         theme: Travail du rappel et du début de patience avec le "assis".
         content: ''
+    isPassed: false
   - type: 1 balade éducative offerte
     numberOfSessions: 1
     passedSessions: []
+    isPassed: false
 documents:
   - title: Bilan comportemental
     filename: doc117117117-bilan-comportemental.pdf
@@ -85,58 +87,32 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   new_customer['dog']['id'] = new_dog_id
   print("new_dog_id", new_dog_id)
 
-  new_first_ongoing_forfait_id = 1
-  for c in reversed(existing_customers):
-    if len(c.get('ongoingForfaits', [])) > 0:
-      new_first_ongoing_forfait_id = c['ongoingForfaits'][-1]['id'] + 1
-      break
-  for forfait in new_customer.get('ongoingForfaits', []):
-    forfait['id'] = new_first_ongoing_forfait_id
-    new_first_ongoing_forfait_id += 1
-  print("new_first_ongoing_forfait_id", new_first_ongoing_forfait_id)
+  # All forfaits (ongoing and passed) now live in one 'customerForfaits' list per
+  # customer, and forfait/session ids must be unique across every customer's list,
+  # not just within one customer's, since actions look them up globally by id.
+  # Ids aren't guaranteed to increase monotonically within a customer's list (some
+  # were renumbered during the ongoingForfaits/passedForfaits merge), so we scan
+  # every customer rather than trusting the last one added.
+  existing_forfait_ids = [f['id'] for c in existing_customers for f in c.get('customerForfaits', [])]
+  new_forfait_id = max(existing_forfait_ids, default=0) + 1
+  for forfait in new_customer.get('customerForfaits', []):
+    forfait['id'] = new_forfait_id
+    new_forfait_id += 1
+  print("new_forfait_id", new_forfait_id)
 
-  new_first_ongoing_forfait_passed_session_id = 1
-  for c in reversed(existing_customers):
-    if len(c.get('ongoingForfaits', [])) > 0:
-      for forfait in reversed(c.get('ongoingForfaits', [])):
-        if len(forfait.get('passedSessions', [])) > 0:
-          new_first_ongoing_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
-          break
-      if new_first_ongoing_forfait_passed_session_id != 1:
-        break
-  for forfait in new_customer.get('ongoingForfaits', []):
+  existing_session_ids = [
+    s['id']
+    for c in existing_customers
+    for f in c.get('customerForfaits', [])
+    for s in f.get('passedSessions', [])
+  ]
+  new_session_id = max(existing_session_ids, default=0) + 1
+  for forfait in new_customer.get('customerForfaits', []):
     for session in forfait.get('passedSessions', []):
-      session['id'] = new_first_ongoing_forfait_passed_session_id
-      new_first_ongoing_forfait_passed_session_id += 1
-  print("new_first_ongoing_forfait_passed_session_id", new_first_ongoing_forfait_passed_session_id)
+      session['id'] = new_session_id
+      new_session_id += 1
+  print("new_session_id", new_session_id)
 
-  # For now we consider ongoing forfait and passed forfait 2 different tables
-  # while in the future in the database they will be stored in the same table, and an ongoing 
-  # forfait won't have the same id as a passed forfait
-  new_first_passed_forfait_id = 1
-  for c in reversed(existing_customers):
-    if len(c.get('passedForfaits', [])) > 0:
-      new_first_passed_forfait_id = c['passedForfaits'][-1]['id'] + 1
-      break
-  for forfait in new_customer.get('passedForfaits', []):
-    forfait['id'] = new_first_passed_forfait_id
-    new_first_passed_forfait_id += 1
-  print("new_first_passed_forfait_id", new_first_passed_forfait_id)
-
-  new_first_passed_forfait_passed_session_id = 1
-  for c in reversed(existing_customers):
-    for forfait in reversed(c.get('passedForfaits', [])):
-      if len(forfait.get('passedSessions', [])) > 0:
-        new_first_passed_forfait_passed_session_id = forfait['passedSessions'][-1]['id'] + 1
-        break
-    if new_first_passed_forfait_passed_session_id != 1:
-      break
-  for forfait in new_customer.get('passedForfaits', []):
-    for session in forfait.get('passedSessions', []):
-      session['id'] = new_first_passed_forfait_passed_session_id
-      new_first_passed_forfait_passed_session_id += 1
-  print("new_first_passed_forfait_passed_session_id", new_first_passed_forfait_passed_session_id)
-  
   for d in new_customer.get('documents', []):
     document_id = int(d['filename'].split('-')[0][len("doc"):])
     d['id'] = document_id
