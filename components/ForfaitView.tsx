@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { ChevronDownIcon } from 'lucide-react';
-import { addPassedSessionToForfait } from '@/actions';
+import { addPassedSessionToForfait, removeForfaitById } from '@/actions';
 import { SessionView } from './SessionView';
 
 export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
@@ -27,6 +27,8 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
   const newPassedSessionTitleRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionDateRef = React.useRef<HTMLInputElement>(null);
   const newPassedSessionContentRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const [isDeleteForfaitModalOpen, setIsDeleteForfaitModalOpen] = React.useState(false);
 
   const addPassedSession = () => {
     const newSession: Session = {
@@ -59,6 +61,7 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
         {forfait.passedSessions.length < forfait.numberOfSessions && (
           <Button onClick={() => setIsAddSessionModalOpen(true)}>➕ Ajouter un rapport de séance</Button>
         )}
+        <Button onClick={() => setIsDeleteForfaitModalOpen(true)}>🗑️ Supprimer le forfait !</Button>
         <CollapsibleContent className="mt-2 space-y-2">
           {forfait.passedSessions.map((session: Session, index: number) => (
             <SessionView key={session.id} session={session} index={index} />
@@ -93,6 +96,21 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setIsAddSessionModalOpen(false)}>Annuler</Button>
             <Button type="button" onClick={addPassedSession}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isDeleteForfaitModalOpen} onOpenChange={setIsDeleteForfaitModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Supprimer le forfait</DialogTitle>
+          </DialogHeader>
+          <p>Êtes-vous sûr de vouloir supprimer ce forfait ?</p>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setIsDeleteForfaitModalOpen(false)}>Annuler</Button>
+            <Button type="button" onClick={() => {
+              removeForfaitById(forfait.id);
+              setIsDeleteForfaitModalOpen(false);
+            }}>Supprimer</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

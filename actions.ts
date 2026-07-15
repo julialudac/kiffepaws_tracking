@@ -53,6 +53,13 @@ const findSessionLocation = (customers: Customer[], sessionId: number): SessionL
   return undefined;
 };
 
+const findClientByClientForfaitId = (customers: Customer[], forfaitId: number): Customer | undefined => {
+  const customer = customers.find((c) =>
+    c.ongoingForfaits?.some((f) => f.id === forfaitId)
+  );
+  return customer;
+}
+
 const updateCustomer = async (customer: Customer): Promise<void> => {
   await fetch(`${JSON_SERVER_URL}/customers/${customer.id}`, {
     method: "PUT",
@@ -69,9 +76,7 @@ export const addPassedSessionToForfait = async (forfaitId: number, session: Sess
   try {
     const customers = await getAllCustomers();
 
-    const customer = customers.find((c) =>
-      c.ongoingForfaits?.some((f) => f.id === forfaitId)
-    );
+    const customer = findClientByClientForfaitId(customers, forfaitId);
     if (!customer) return;
 
     const forfait = customer.ongoingForfaits?.find((f) => f.id === forfaitId);
@@ -144,3 +149,17 @@ export const addForfaitToCustomer = async (customerId: number, forfait: Forfait)
     throw error;
   }
 }
+
+export const removeForfaitById = async (forfaitId: number): Promise<void> => {
+  try {
+    const customers = await getAllCustomers();
+    const customer = findClientByClientForfaitId(customers, forfaitId);
+    if (!customer) return;
+
+    customer.ongoingForfaits = customer.ongoingForfaits?.filter((f) => f.id !== forfaitId);
+    await updateCustomer(customer);
+  } catch (error) {
+    console.error("Error removing forfait:", error);
+    throw error;
+  }
+}; 
