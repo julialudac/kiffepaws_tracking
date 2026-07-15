@@ -36,30 +36,13 @@ import { ForfaitView } from './ForfaitView';
 import { Field, FieldGroup, FieldLabel } from './ui/field';
 import { addForfaitToCustomer } from '@/actions';
 
-const getAllForfaits = (): Forfait[] => {
-  return [
-    { id: 1, name: "F5", numberOfSessions: 5 },
-    { id: 2, name: "F10", numberOfSessions: 10 },
-    { id: 3, name: "F15", numberOfSessions: 15 },
-    { id: 4, name: "F20", numberOfSessions: 20 },
-    { id: 5, name: "Forfait 10 balades éducatives", numberOfSessions: 10 },
-    { id: 6, name: "1 balade éducative offerte", numberOfSessions: 1 },
-    { id: 7, name: "Séance à l'unité", numberOfSessions: 1 },
-  ]
-}
-
-
 // TODO about dialog footer : dups in several components
 // TODO refactor dups here 
 // Note : There is a Radix UI bug that prevents to select an element in a combobox which is inside a dialog, with mouse and we have to select with keyboard!
 // See https://github.com/shadcn-ui/ui/issues/1748 . Same issue with a drawer instead of a dialog. 
-function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode }) {
+function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode, forfaits: Forfait[] }) {
   const [isAddForfaitModalOpen, setIsAddForfaitModalOpen] = React.useState(false);
   const newForfaitTypeRef = React.useRef<HTMLInputElement>(null);
-
-  // TODO replace by a context (useContext)
-  // First, I fake the list of forfaits. TODO : put forfaits in DB
-  const existingForfaits: Forfait[] = getAllForfaits();
 
   const addNewForfait = () => {
     const selectedForfaitName = newForfaitTypeRef.current!.value;
@@ -67,7 +50,7 @@ function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Cus
       alert("Veuillez sélectionner un type de forfait.");
       return;
     }
-    const selectedForfait: Forfait = existingForfaits.find(forfait => forfait.name === selectedForfaitName)!;
+    const selectedForfait: Forfait = forfaits.find(forfait => forfait.name === selectedForfaitName)!;
     addForfaitToCustomer(customer.id, selectedForfait);
     setIsAddForfaitModalOpen(false);
   }
@@ -143,7 +126,7 @@ function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Cus
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="forfaitSelect">Type de forfait</FieldLabel>
-              <Combobox items={existingForfaits} name="forfaitSelect" id="forfaitSelect">
+              <Combobox items={forfaits} name="forfaitSelect" id="forfaitSelect">
                 <ComboboxInput ref={newForfaitTypeRef} placeholder="Select a framework" />
                 <ComboboxContent>
                   <ComboboxList>
@@ -169,29 +152,31 @@ function CustomerCard({ customer, open, onOpenChange, actions }: { customer: Cus
   )
 }
 
-export function CustomerView({ customer, open, onOpenChange }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void }) {
+export function CustomerView({ customer, open, onOpenChange, forfaits }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, forfaits: Forfait[] }) {
   return (
     <CustomerCard
       customer={customer}
       open={open}
       onOpenChange={onOpenChange}
       actions={<Button variant="default"><Link href={`/customer/${customer.id}`}>Consulter</Link></Button>}
+      forfaits={forfaits}
     />
   )
 }
 
-export function CustomerDetailView({ customer }: { customer: Customer }) {
+export function CustomerDetailView({ customer, forfaits }: { customer: Customer, forfaits: Forfait[] }) {
   const [open, setOpen] = React.useState(true)
   return (
     <CustomerCard
       customer={customer}
       open={open}
       onOpenChange={setOpen}
+      forfaits={forfaits}
     />
   )
 }
 
-export function CustomerViews({ customers }: { customers: Customer[] }) {
+export function CustomerViews({ customers, forfaits }: { customers: Customer[], forfaits: Forfait[] }) {
   const [openMap, setOpenMap] = React.useState<Record<number, boolean>>({})
   const allOpen = customers.length > 0 && customers.every((customer) => openMap[customer.id])
 
@@ -216,6 +201,7 @@ export function CustomerViews({ customers }: { customers: Customer[] }) {
             customer={customer}
             open={!!openMap[customer.id]}
             onOpenChange={(open) => setOpenMap((prev) => ({ ...prev, [customer.id]: open }))}
+            forfaits={forfaits}
           />
           <br /> <br />
         </React.Fragment>

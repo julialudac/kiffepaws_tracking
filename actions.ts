@@ -4,6 +4,17 @@ import { revalidatePath } from "next/cache";
 import { JSON_SERVER_URL } from "./constants";
 import { Customer, CustomerForfait, Session, Forfait } from "./entities/entitites";
 
+export const getAllForfaits = async (): Promise<Forfait[]> => {
+  try {
+    const response = await fetch(JSON_SERVER_URL + "/forfaits");
+    const data = await response.json();
+    return data as Forfait[];
+  } catch (error) {
+    console.error("Error fetching forfaits:", error);
+    throw error;
+  }
+};
+
 export const getAllCustomers = async (): Promise<Customer[]> => {
   try {
     const response = await fetch(JSON_SERVER_URL + "/customers");

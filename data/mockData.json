@@ -128,5 +128,42 @@
         }
       ]
     }
+  ],
+  "forfaits": [
+    {
+      "id": 1,
+      "name": "F5",
+      "numberOfSessions": 5
+    },
+    {
+      "id": 2,
+      "name": "F10",
+      "numberOfSessions": 10
+    },
+    {
+      "id": 3,
+      "name": "F15",
+      "numberOfSessions": 15
+    },
+    {
+      "id": 4,
+      "name": "F20",
+      "numberOfSessions": 20
+    },
+    {
+      "id": 5,
+      "name": "Forfait 10 balades éducatives",
+      "numberOfSessions": 10
+    },
+    {
+      "id": 6,
+      "name": "1 balade éducative offerte",
+      "numberOfSessions": 1
+    },
+    {
+      "id": 7,
+      "name": "Séance à l'unité",
+      "numberOfSessions": 1
+    }
   ]
 }
