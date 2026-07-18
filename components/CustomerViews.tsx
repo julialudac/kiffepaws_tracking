@@ -75,7 +75,7 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
           </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent>
-              <DocumentsView documents={customer.documents} />
+              <DocumentsView documents={customer.documents} customerId={customer.id} />
               {passedForfaits.length > 0 && (
                 <Card className="mt-4 bg-orange-50/70 bg-orange-50/70">
                   <CardHeader>

@@ -1,8 +1,11 @@
 "use server";
 
+import path from "node:path";
+import { writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
+import { getUploadsDirectory } from "./utils";
 import { JSON_SERVER_URL } from "./constants";
-import { Customer, CustomerForfait, Session, Forfait } from "./entities/entitites";
+import { Customer, CustomerForfait, Session, Forfait, Upload } from "./entities/entitites";
 
 export const getAllForfaits = async (): Promise<Forfait[]> => {
   try {
@@ -169,4 +172,47 @@ export const removeForfaitById = async (forfaitId: number): Promise<void> => {
     console.error("Error removing forfait:", error);
     throw error;
   }
-}; 
+};
+
+const getDocumentFileName = (id: number, file: File): string => "doc" + id + "-" + file.name;
+
+const uploadFile = async (file: File, id: number): Promise<Upload> => {
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const filename = getDocumentFileName(id, file);
+    const filePath = path.join(getUploadsDirectory(), filename);
+    await writeFile(filePath, buffer);
+    return { id, title: file.name, filename };
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+}
+
+const addDocumentRefToCustomer = async (customerId: number, document: Upload): Promise<void> => {
+  try {
+    const customers = await getAllCustomers();
+    const customer = customers.find((c) => c.id === customerId);
+    if (!customer) return;
+
+    if (!customer.documents) {
+      customer.documents = [];
+    }
+    customer.documents.push(document);
+    await updateCustomer(customer);
+  } catch (error) {
+    console.error("Error adding document:", error);
+    throw error;
+  }
+}
+
+export const attachDocumentToCustomer = async (customerId: number, file: File): Promise<void> => {
+  try {
+    const id = Date.now(); // Generate a unique ID for the document
+    const document = await uploadFile(file, id);
+    await addDocumentRefToCustomer(customerId, document);
+  } catch (error) {
+    console.error("Error attaching document to customer:", error);
+    throw error;
+  }
+};
