@@ -3,8 +3,6 @@ import { Upload } from "./entities/entitites";
 import path from "node:path"
 
 export const getDocumentUrl = (document: Upload) => {
-  console.log(document);
-  console.log(`${DOCS_DIRECTORY_URL}/${"doc" + document.id}-${document.filename}`);
   return `${DOCS_DIRECTORY_URL}/${document.filename}`;
 };
 

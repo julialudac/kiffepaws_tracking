@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getUploadsDirectory } from "./utils";
 import { JSON_SERVER_URL } from "./constants";
 import { Customer, CustomerForfait, Session, Forfait, Upload } from "./entities/entitites";
+import { CustomerDTO } from "./dto/dto";
 
 export const getAllForfaits = async (): Promise<Forfait[]> => {
   try {
@@ -18,7 +19,7 @@ export const getAllForfaits = async (): Promise<Forfait[]> => {
   }
 };
 
-export const getAllCustomers = async (): Promise<Customer[]> => {
+const getAllCustomers = async (): Promise<Customer[]> => {
   try {
     const response = await fetch(JSON_SERVER_URL + "/customers");
     const data = await response.json();
@@ -29,11 +30,50 @@ export const getAllCustomers = async (): Promise<Customer[]> => {
   }
 };
 
-export const getCustomerById = async (id: number): Promise<Customer> => {
+const parseDdMMyyyyDate = (dateString: string): Date => {
+  const [day, month, year] = dateString.split("/").map(Number);
+  // Note: In JavaScript, months are 0-indexed (0 = January, 1 = February, ..., 11 = December)
+  // Use UTC to avoid timezone shifts when converting to ISO strings (toISOString), like days "loosing" 1 day.
+  return new Date(Date.UTC(year, month - 1, day));
+};
+
+const computeLastSessionDate = (customer: Customer): string => {
+  const lastSessionDate = customer.customerForfaits?.flatMap((forfait) => forfait.passedSessions)
+    .reduce((latest, session) => {
+      // session.date is a string in the form "DD/MM/YYYY", we need to convert it to a Date object
+      const sessionDate = parseDdMMyyyyDate(session.date);
+      return sessionDate > latest ? sessionDate : latest;
+    }, new Date(0));
+  return lastSessionDate ? lastSessionDate.toISOString().split("T")[0] : "";
+}
+
+export const getAllCustomersDTO = async (): Promise<CustomerDTO[]> => {
+  try {
+    const customerEntities = await getAllCustomers();
+    const customersDTO: CustomerDTO[] = customerEntities.map((customer) => ({ ...customer, lastSessionDate: computeLastSessionDate(customer) }));
+    return customersDTO;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+const getCustomerById = async (id: number): Promise<Customer> => {
   try {
     const response = await fetch(`${JSON_SERVER_URL}/customers/${id}`);
     const data = await response.json();
     return data as Customer;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getCustomerDTOById = async (id: number): Promise<CustomerDTO> => {
+  try {
+    const customer = await getCustomerById(id);
+    const lastSessionDate = computeLastSessionDate(customer);
+    return { ...customer, lastSessionDate };
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

@@ -73,6 +73,7 @@ For now I see those entities :
 [X] Convert ongoingForfait into passedForfait if nb passed forfaits == nb max forfaits
 [X] Convert passedForfait into ongoingForfait if nb passed forfaits < nb max forfaits
 [X] Display session reports as .md
+[X] Display next to customer and dog name "Dernière séance : date" which corresponds to the last passed session 
 [ ] Feature download customer in a yaml format
 [ ] Download reports as pdf (from markdown)
 [ ] etc

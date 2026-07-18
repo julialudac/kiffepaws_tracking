@@ -35,12 +35,13 @@ import { ForfaitView } from './ForfaitView';
 import { Field, FieldGroup, FieldLabel } from './ui/field';
 import { addForfaitToCustomer } from '@/actions';
 import { DocumentsView } from './DocumentsView';
+import { CustomerDTO } from '@/dto/dto';
 
 // TODO about dialog footer : dups in several components
 // TODO refactor dups here 
 // Note : There is a Radix UI bug that prevents to select an element in a combobox which is inside a dialog, with mouse and we have to select with keyboard!
 // See https://github.com/shadcn-ui/ui/issues/1748 . Same issue with a drawer instead of a dialog. 
-function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode, forfaits: Forfait[] }) {
+function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { customer: CustomerDTO, open: boolean, onOpenChange: (open: boolean) => void, actions?: React.ReactNode, forfaits: Forfait[] }) {
   const [isAddForfaitModalOpen, setIsAddForfaitModalOpen] = React.useState(false);
   const newForfaitTypeRef = React.useRef<HTMLInputElement>(null);
   const ongoingForfaits = customer.customerForfaits?.filter((f) => !f.isPassed) ?? [];
@@ -69,6 +70,7 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
             <CardHeader className="group">
               <CardTitle className="flex items-center justify-between gap-2">
                 <span>{customer.firstname} & {customer.dog.name}</span>
+                <em className="text-sm text-gray-500">{customer.lastSessionDate ? `Dernière séance : ${customer.lastSessionDate}` : "Aucune séance passée"}</em>
                 <ChevronDownIcon className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </CardTitle>
             </CardHeader>
@@ -143,7 +145,7 @@ function CustomerCard({ customer, open, onOpenChange, actions, forfaits }: { cus
   )
 }
 
-export function CustomerView({ customer, open, onOpenChange, forfaits }: { customer: Customer, open: boolean, onOpenChange: (open: boolean) => void, forfaits: Forfait[] }) {
+export function CustomerView({ customer, open, onOpenChange, forfaits }: { customer: CustomerDTO, open: boolean, onOpenChange: (open: boolean) => void, forfaits: Forfait[] }) {
   return (
     <CustomerCard
       customer={customer}
@@ -155,7 +157,7 @@ export function CustomerView({ customer, open, onOpenChange, forfaits }: { custo
   )
 }
 
-export function CustomerDetailView({ customer, forfaits }: { customer: Customer, forfaits: Forfait[] }) {
+export function CustomerDetailView({ customer, forfaits }: { customer: CustomerDTO, forfaits: Forfait[] }) {
   const [open, setOpen] = React.useState(true)
   return (
     <CustomerCard
@@ -167,7 +169,7 @@ export function CustomerDetailView({ customer, forfaits }: { customer: Customer,
   )
 }
 
-export function CustomerViews({ customers, forfaits }: { customers: Customer[], forfaits: Forfait[] }) {
+export function CustomerViews({ customers, forfaits }: { customers: CustomerDTO[], forfaits: Forfait[] }) {
   const [openMap, setOpenMap] = React.useState<Record<number, boolean>>({})
   const allOpen = customers.length > 0 && customers.every((customer) => openMap[customer.id])
 

@@ -1,15 +1,16 @@
 import { CustomerDetailView } from "@/components/CustomerViews";
-import { fetchCustomer } from "./actions";
+import { getCustomerDTOById } from "@/actions";
 import { getAllForfaits } from "@/actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CustomerDTO } from "@/dto/dto";
 
 // Note: this data could also be loaded client-side with a useEffect + fetch,
 // but we fetch it on the server via a Server Action so the page renders with data already in hand.
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const customer = await fetchCustomer(Number(id));
+  const customer: CustomerDTO = await getCustomerDTOById(Number(id));
   const forfaits = await getAllForfaits();
 
   return (
