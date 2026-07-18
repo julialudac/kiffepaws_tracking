@@ -75,7 +75,7 @@ For now I see those entities :
 [ ] etc
 ### Documents 
 [X] Feature to add document for a customer. The name of the doc will be for now the same as the name stored on the server side
-[ ] Feature to remove a document (which is in fact a ref) from a customer. For now, we don't remove the doc itself from the database
+[X] Feature to remove a document (which is in fact a ref) from a customer. For now, we don't remove the doc itself from the database
 [ ] Feature to allow to select existing documents from database to attach to a customer.
 [ ] Scripts to remove unreferenced documents from database. Should be done carefully, because we would want to keep some (like generalistic documents)
 ## Technical debt

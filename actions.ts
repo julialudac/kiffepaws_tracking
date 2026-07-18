@@ -216,3 +216,22 @@ export const attachDocumentToCustomer = async (customerId: number, file: File): 
     throw error;
   }
 };
+
+const findClientByDocumentId = (customers: Customer[], documentId: number): Customer | undefined => {
+  return customers.find((c) => c.documents?.some((d) => d.id === documentId));
+};
+
+export const removeDocumentById = async (documentId: number): Promise<void> => {
+  try {
+    const customers = await getAllCustomers();
+    const customer = findClientByDocumentId(customers, documentId);
+    if (!customer) return;
+
+    // We only remove the reference to the document, the file itself stays on the server.
+    customer.documents = customer.documents?.filter((d) => d.id !== documentId);
+    await updateCustomer(customer);
+  } catch (error) {
+    console.error("Error removing document:", error);
+    throw error;
+  }
+};
