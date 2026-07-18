@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { removeSessionById, updateSessionById } from '@/actions';
+import ReactMarkdown from "react-markdown";
 
 export function SessionView({ session, index }: { session: Session, index: number }) {
   const [deleteOpen, setDeleteOpen] = React.useState(false)
@@ -50,7 +51,7 @@ export function SessionView({ session, index }: { session: Session, index: numbe
         <CardAction><Button onClick={() => setDeleteOpen(true)}>🗑️ Supprimer</Button></CardAction>
         <CardTitle>Séance n°{index + 1} - {session.theme}</CardTitle>
         <CardDescription>{session.date}</CardDescription>
-        <CardContent><pre className="whitespace-pre-wrap break-words text-justify">{session.content}</pre></CardContent>
+        <CardContent className="prose"><ReactMarkdown>{session.content}</ReactMarkdown></CardContent>
       </Card>
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent>

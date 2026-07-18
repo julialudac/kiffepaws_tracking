@@ -72,12 +72,19 @@ For now I see those entities :
 [X] R customer : Add a button to consult/view details on one customer -> will redirect to a route like "/customers/{id}" where only the selected customer is displayed. The "page" will also contain a "Retour" button to go back home.
 [X] Convert ongoingForfait into passedForfait if nb passed forfaits == nb max forfaits
 [X] Convert passedForfait into ongoingForfait if nb passed forfaits < nb max forfaits
+[X] Display session reports as .md
+[ ] Feature download customer in a yaml format
+[ ] Download reports as pdf (from markdown)
 [ ] etc
 ### Documents 
 [X] Feature to add document for a customer. The name of the doc will be for now the same as the name stored on the server side
 [X] Feature to remove a document (which is in fact a ref) from a customer. For now, we don't remove the doc itself from the database
 [ ] Feature to allow to select existing documents from database to attach to a customer.
 [ ] Scripts to remove unreferenced documents from database. Should be done carefully, because we would want to keep some (like generalistic documents)
+## For later 
+[ ] 1 page to manage customers : add, delete
+[ ] 
+[ ] etc 
 ## Technical debt
 [ ] Refactor to remove duplicates (use tools to detect them)
 [ ] Learn how to use Playwright to add some tests
