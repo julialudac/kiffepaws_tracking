@@ -1,18 +1,18 @@
 {
   "customers": [
     {
-      "id": 1,
+      "id": "1",
       "firstname": "John",
       "surname": "Doe",
       "email": "6yE9o@example.com",
       "dog": {
-        "id": 1,
+        "id": "1",
         "name": "Rex",
         "breed": "German shepherd"
       },
       "customerForfaits": [
         {
-          "id": 1,
+          "id": "1",
           "type": "F15",
           "numberOfSessions": 15,
           "passedSessions": [],
@@ -21,10 +21,10 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "firstname": "Damien",
       "dog": {
-        "id": 2,
+        "id": "2",
         "name": "Vaya",
         "age": 1,
         "breed": "English cocker spaniel",
@@ -32,50 +32,50 @@
       },
       "documents": [
         {
-          "id": 1,
+          "id": "1",
           "title": "Bilan comportemental",
           "filename": "doc117117117-bilan-comportemental.pdf"
         },
         {
-          "id": 2,
+          "id": "2",
           "title": "Règles de vie",
           "filename": "doc217217217-regles-de-vie.pdf"
         }
       ],
       "customerForfaits": [
         {
-          "id": 2,
+          "id": "2",
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
           "passedSessions": [],
           "isPassed": false
         },
         {
-          "id": 3,
+          "id": "3",
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
           "passedSessions": [],
           "isPassed": false
         },
         {
-          "id": 4,
+          "id": "4",
           "type": "F15",
           "numberOfSessions": 15,
           "passedSessions": [
             {
-              "id": 1,
+              "id": "1",
               "date": "06/02/2026",
               "theme": "Règles de vie concernant la nourriture et les contacts jeux et caresses.",
               "content": "Séance règles de vie concernant la nourriture et les contacts jeux et caresses.\n\nNous avons également fait le conditionnement canette, Vaya n'étant pas sensible à autre chose que la canette qui fonctionne sur elle."
             },
             {
-              "id": 2,
+              "id": "2",
               "date": "11/02/2026",
               "theme": "Séance règle de vie partie territoire + solutions contre le vol d'objet.",
               "content": "Territoire : \n- interdit de se cacher sous les meubles qui est un point stratégique pour elle.\n- interdit de suivre les humains partout\n- passer la porte en second, attendre avant d'aller voir les invités\n\nSolutions contre le vol : \n- on fait exprès de mettre les objets partout, dès qu'elle y va canette sinon récompense\n- solution de la pierre d'alun dans les mouchoirs\n\nJe joins la fiche générale des règles de vie"
             },
             {
-              "id": 3,
+              "id": "3",
               "date": "17/02/2026",
               "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
               "content": ""
@@ -86,23 +86,23 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "firstname": "Eric",
       "surname": "Doe",
       "email": "yE9o@example.com",
       "dog": {
-        "id": 3,
+        "id": "3",
         "name": "Maya",
         "age": 2
       },
       "customerForfaits": [
         {
-          "id": 5,
+          "id": "5",
           "type": "F10",
           "numberOfSessions": 10,
           "passedSessions": [
             {
-              "id": 4,
+              "id": "4",
               "date": "20/01/2025",
               "theme": "Thème : déconditionnement à l'approche d'Eric.",
               "content": "On déconditionne petit à petit avec la croquette, sans contrainte pour cette séance, ce n'est pas encore cela, la progression est lente. La prochaine fois on sera plus dans la contrainte."
@@ -111,19 +111,19 @@
           "isPassed": false
         },
         {
-          "id": 7,
+          "id": "7",
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
           "passedSessions": [],
           "isPassed": false
         },
         {
-          "id": 6,
+          "id": "6",
           "type": "1 balade éducative offerte",
           "numberOfSessions": 1,
           "passedSessions": [
             {
-              "id": 8,
+              "id": "8",
               "date": "17/02/2026",
               "theme": "Thème : travail du rappel et du début de patience avec le \"assis\".",
               "content": "Difficile de travailler le rappel, car Maya ne va pas loin.\nUn trick est que je prenne la longe pour l'éloigner de ses maîtres, et eux l'appellent, mais quand elle est en longe elle n'ose même pas y aller tellement elle est soumise."
@@ -136,37 +136,37 @@
   ],
   "forfaits": [
     {
-      "id": 1,
+      "id": "1",
       "name": "F5",
       "numberOfSessions": 5
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "F10",
       "numberOfSessions": 10
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "F15",
       "numberOfSessions": 15
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "F20",
       "numberOfSessions": 20
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Forfait 10 balades éducatives",
       "numberOfSessions": 10
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "1 balade éducative offerte",
       "numberOfSessions": 1
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Séance à l'unité",
       "numberOfSessions": 1
     }

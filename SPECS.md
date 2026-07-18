@@ -11,6 +11,7 @@ For each we display :
 - each session has a date, theme and content
 
 ## Entities (last update 17/06/26)
+Note: every `id` field is a `number` in the app/entities layer. json-server (1.x) actually serves and stores ids as strings under the hood regardless of how they're typed in the source JSON file — that quirk is confined to `actions.ts` (normalize to number right after every fetch, denormalize back to string right before every write to json-server), so the rest of the app never has to deal with it. This also means swapping json-server for a different backend later only touches that one boundary.
 For now I see those entities :
 - Owner : firstname, surname?, email?, dog
 - Customer : a subclass of Owner, with property customerForfaits

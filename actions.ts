@@ -5,14 +5,59 @@ import { writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
 import { getUploadsDirectory } from "./utils";
 import { JSON_SERVER_URL } from "./constants";
-import { Customer, CustomerForfait, Session, Forfait, Upload } from "./entities/entitites";
+import { Customer, CustomerForfait, Session, Forfait, Upload, Dog } from "./entities/entitites";
 import { CustomerDTO } from "./dto/dto";
+
+// json-server always serves (and stores) ids as strings, regardless of how they're
+// typed in the underlying data file. The rest of the app treats ids as numbers, so
+// every id is normalized to a number right after a fetch, and denormalized back to
+// a string right before a write — keeping that quirk confined to this boundary
+// instead of leaking `string | number` id types through the whole codebase.
+const normalizeSession = (session: Session): Session => ({ ...session, id: Number(session.id) });
+
+const normalizeForfait = (forfait: CustomerForfait): CustomerForfait => ({
+  ...forfait,
+  id: Number(forfait.id),
+  passedSessions: forfait.passedSessions.map(normalizeSession),
+});
+
+const normalizeUpload = (upload: Upload): Upload => ({ ...upload, id: Number(upload.id) });
+
+const normalizeDog = (dog: Dog): Dog => ({ ...dog, id: Number(dog.id) });
+
+const normalizeCustomer = (customer: Customer): Customer => ({
+  ...customer,
+  id: Number(customer.id),
+  dog: normalizeDog(customer.dog),
+  customerForfaits: customer.customerForfaits?.map(normalizeForfait),
+  documents: customer.documents?.map(normalizeUpload),
+});
+
+const denormalizeSession = (session: Session) => ({ ...session, id: String(session.id) });
+
+const denormalizeForfait = (forfait: CustomerForfait) => ({
+  ...forfait,
+  id: String(forfait.id),
+  passedSessions: forfait.passedSessions.map(denormalizeSession),
+});
+
+const denormalizeUpload = (upload: Upload) => ({ ...upload, id: String(upload.id) });
+
+const denormalizeDog = (dog: Dog) => ({ ...dog, id: String(dog.id) });
+
+const denormalizeCustomer = (customer: Customer) => ({
+  ...customer,
+  id: String(customer.id),
+  dog: denormalizeDog(customer.dog),
+  customerForfaits: customer.customerForfaits?.map(denormalizeForfait),
+  documents: customer.documents?.map(denormalizeUpload),
+});
 
 export const getAllForfaits = async (): Promise<Forfait[]> => {
   try {
     const response = await fetch(JSON_SERVER_URL + "/forfaits");
     const data = await response.json();
-    return data as Forfait[];
+    return (data as Forfait[]).map((forfait) => ({ ...forfait, id: Number(forfait.id) }));
   } catch (error) {
     console.error("Error fetching forfaits:", error);
     throw error;
@@ -23,7 +68,7 @@ const getAllCustomers = async (): Promise<Customer[]> => {
   try {
     const response = await fetch(JSON_SERVER_URL + "/customers");
     const data = await response.json();
-    return data as Customer[];
+    return (data as Customer[]).map(normalizeCustomer);
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -62,7 +107,7 @@ const getCustomerById = async (id: number): Promise<Customer> => {
   try {
     const response = await fetch(`${JSON_SERVER_URL}/customers/${id}`);
     const data = await response.json();
-    return data as Customer;
+    return normalizeCustomer(data as Customer);
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -104,12 +149,13 @@ const findClientByClientForfaitId = (customers: Customer[], forfaitId: number): 
 }
 
 const updateCustomer = async (customer: Customer): Promise<void> => {
-  await fetch(`${JSON_SERVER_URL}/customers/${customer.id}`, {
+  const payload = denormalizeCustomer(customer);
+  await fetch(`${JSON_SERVER_URL}/customers/${payload.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(customer),
+    body: JSON.stringify(payload),
   });
   revalidatePath("/");
 };
