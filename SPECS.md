@@ -88,5 +88,9 @@ For now I see those entities :
 [ ] 
 [ ] etc 
 ## Technical debt
+[ ] Factorize the remove feature from the button
+[ ] Factorize the prevent default when clicking outside the modal
+[ ] Move the sessions handling from Forfait and put it in 'SessionView' in a component "SessionsView"
+[ ] Same for Forfaits in Customer
 [ ] Refactor to remove duplicates (use tools to detect them)
 [ ] Learn how to use Playwright to add some tests

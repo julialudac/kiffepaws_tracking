@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Customer, CustomerForfait, Forfait } from '../entities/entitites';
+import { CustomerForfait, Forfait } from '../entities/entitites';
 import {
   Card,
   CardAction,

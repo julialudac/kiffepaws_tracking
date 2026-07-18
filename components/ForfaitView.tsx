@@ -91,7 +91,8 @@ export function ForfaitView({ forfait }: { forfait: CustomerForfait }) {
             </Field>
             <Field>
               <FieldLabel htmlFor="content">Contenu</FieldLabel>
-              <Textarea id="content" name="content" defaultValue="" ref={newPassedSessionContentRef} />
+              <Textarea id="content" name="content" defaultValue="" ref={newPassedSessionContentRef}
+                className="max-h-[260px] overflow-auto" />
             </Field>
           </FieldGroup>
           <DialogFooter>

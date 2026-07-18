@@ -85,7 +85,8 @@ export function SessionView({ session, index }: { session: Session, index: numbe
             </Field>
             <Field>
               <FieldLabel htmlFor="edit-content">Contenu</FieldLabel>
-              <Textarea id="edit-content" ref={contentInputRef} defaultValue={session.content} />
+              <Textarea id="edit-content" ref={contentInputRef} defaultValue={session.content}
+                className="max-h-[260px] overflow-auto" />
             </Field>
           </FieldGroup>
           <DialogFooter>
