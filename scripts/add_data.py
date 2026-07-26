@@ -71,13 +71,10 @@ def add_customer(customer_yaml : str) -> None:
   print("succes")
 
 
-# Code dégueulasse mais au moins chaque action est séparée, et cela ne vaut pas le coup de refacto 
-# pour le moment
 # json-server serves and stores every 'id' as a string (even when the source file
 # has a JSON number), so existing ids read back from the API are parsed with int()
-# before doing arithmetic on them. The ids we generate here are sent as plain ints in
-# the POST body; json-server accepts and persists them fine, coercing to its own
-# string representation same as it would for any other value.
+# before doing arithmetic on them, and every id generated here is converted back to
+# str() right before it goes into the POST body, matching json-server's own type.
 def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   if existing_customers:
     new_customer_id = int(existing_customers[-1]['id']) + 1
@@ -86,10 +83,10 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
     new_customer_id = 1
     new_dog_id = 1
 
-  new_customer['id'] = new_customer_id
+  new_customer['id'] = str(new_customer_id)
   print("new_customer_id", new_customer_id)
 
-  new_customer['dog']['id'] = new_dog_id
+  new_customer['dog']['id'] = str(new_dog_id)
   print("new_dog_id", new_dog_id)
 
   # All forfaits (ongoing and passed) now live in one 'customerForfaits' list per
@@ -101,7 +98,7 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   existing_forfait_ids = [int(f['id']) for c in existing_customers for f in c.get('customerForfaits', [])]
   new_forfait_id = max(existing_forfait_ids, default=0) + 1
   for forfait in new_customer.get('customerForfaits', []):
-    forfait['id'] = new_forfait_id
+    forfait['id'] = str(new_forfait_id)
     new_forfait_id += 1
   print("new_forfait_id", new_forfait_id)
 
@@ -114,13 +111,13 @@ def __append_ids__(existing_customers : list, new_customer : dict) -> None:
   new_session_id = max(existing_session_ids, default=0) + 1
   for forfait in new_customer.get('customerForfaits', []):
     for session in forfait.get('passedSessions', []):
-      session['id'] = new_session_id
+      session['id'] = str(new_session_id)
       new_session_id += 1
   print("new_session_id", new_session_id)
 
   for d in new_customer.get('documents', []):
     document_id = int(d['filename'].split('-')[0][len("doc"):])
-    d['id'] = document_id
+    d['id'] = str(document_id)
 
   # print("object after append id:", new_customer)
 
